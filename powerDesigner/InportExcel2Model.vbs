@@ -117,7 +117,7 @@ Sub a(x1, mdl)
 	End With
 
 	MsgBox "生成数据 表结构共计 " + CStr(Count), vbOK + vbInformation, " 表"
-
+    x1.Workbooks.close False
 	Exit Sub
 	End Sub
 	
