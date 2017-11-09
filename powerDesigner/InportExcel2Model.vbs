@@ -1,7 +1,7 @@
 
 '******************************************************************************
 '* File:     excel_inport.vbs
-'* Title:    将excel文档导入到模型
+'* Title:    将excel文档导入到模型（win7版）
 '* Author:   lsj qq:273364475
 '* Created:  2017-11-09
 '* Mod By:   
@@ -20,16 +20,22 @@ If (mdl Is Nothing) Then
 	MsgBox "There is no Active Model"
 End If
 
+'打开文件选择框获取导入文件
+Dim filePath
+filePath=BrowseForFile()
+
 Dim HaveExcel
 Dim RQ
 RQ         = vbYes 'MsgBox("Is  Excel Installed on your machine ?", vbYesNo + vbInformation, "Confirmation")
 
-If RQ = vbYes Then
+If RQ = vbYes Then   
+	
 	HaveExcel = True
 	' Open & Create  Excel Document
+	
 	Dim x1 '
 	Set x1 = CreateObject("Excel.Application")
-	x1.Workbooks.Open "D:\Program Files (x86)\Sybase\PowerDesigner 16\execl2power\11.xlsx" '指定 excel文档路径
+	x1.Workbooks.Open filePath '指定 excel文档路径
 	x1.Workbooks(1).Worksheets("Sheet1").Activate '指定要打开的sheet名称
 Else
 	HaveExcel = False
@@ -114,3 +120,33 @@ Sub a(x1, mdl)
 
 	Exit Sub
 	End Sub
+	
+'-------------------------------------
+'文件选择框win7版
+Function BrowseForFile()
+    Dim shell : Set shell = CreateObject("WScript.Shell")
+    Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim tempFolder : Set tempFolder = fso.GetSpecialFolder(2)
+    Dim tempName : tempName = fso.GetTempName()
+    Dim tempFile : Set tempFile = tempFolder.CreateTextFile(tempName & ".hta")
+    tempFile.Write _
+    "<html>" & _
+    "<head>" & _
+    "<title>Browse</title>" & _
+    "</head>" & _
+    "<body>" & _
+    "<input type='file' id='f' />" & _
+    "<script type='text/javascript'>" & _
+    "var f = document.getElementById('f');" & _
+    "f.click();" & _
+    "var shell = new ActiveXObject('WScript.Shell');" & _
+    "shell.RegWrite('HKEY_CURRENT_USER\\Volatile Environment\\MsgResp', f.value);" & _
+    "window.close();" & _
+    "</script>" & _
+    "</body>" & _
+    "</html>"
+    tempFile.Close
+    shell.Run tempFolder & "\" & tempName & ".hta", 0, True
+    BrowseForFile = shell.RegRead("HKEY_CURRENT_USER\Volatile Environment\MsgResp")
+    shell.RegDelete "HKEY_CURRENT_USER\Volatile Environment\MsgResp"
+End Function
