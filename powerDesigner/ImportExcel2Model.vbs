@@ -1,6 +1,6 @@
 
 '******************************************************************************
-'* File:     excel_inport.vbs
+'* File:     excel_import.vbs
 '* Title:    将excel文档导入到模型（win7版）
 '* Author:   lsj qq:273364475
 '* Created:  2017-11-09
@@ -36,7 +36,7 @@ If RQ = vbYes Then
 	Dim x1 '
 	Set x1 = CreateObject("Excel.Application")
 	x1.Workbooks.Open filePath '指定 excel文档路径
-	x1.Workbooks(1).Worksheets("Sheet1").Activate '指定要打开的sheet名称
+	x1.Workbooks(1).Worksheets("表结构").Activate '指定要打开的sheet名称
 Else
 	HaveExcel = False
 End If
@@ -55,7 +55,7 @@ Sub a(x1, mdl)
 
 	On Error Resume Next
 
-	With x1.Workbooks(1).Worksheets("Sheet1")
+	With x1.Workbooks(1).Worksheets("表结构")
 		flag = 0
 		null_cnt = 0
 		
