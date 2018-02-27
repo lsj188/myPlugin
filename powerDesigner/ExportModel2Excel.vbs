@@ -1,6 +1,6 @@
 '******************************************************************************
 '* File:     export_excel.vbs
-'* Title:    å°†æ¨¡å‹å¯¼å‡ºåˆ°excel
+'* Title:    ½«Ä£ĞÍµ¼³öµ½excel
 '* Author:   lsj qq:273364475
 '* Created:  2017-11-09
 '* Mod By:   
@@ -25,26 +25,26 @@ If (Model Is Nothing) Or (Not Model.IsKindOf(PdPDM.cls_Model)) Then
 	MsgBox "The current model is not an PDM model."
 Else
 	' Get the tables collection
-	'åˆ›å»ºEXCEL APP
+	'´´½¨EXCEL APP
 	Dim beginrow
 	Dim EXCEL
 	Dim SHEET
 	Dim SHEETLIST
 	Set EXCEL                         = CreateObject("Excel.Application")
-	EXCEL.workbooks.add( - 4167)'æ·»åŠ å·¥ä½œè¡¨
-	EXCEL.workbooks(1).sheets(1).name = "è¡¨ç»“æ„"
-	Set SHEET                         = EXCEL.workbooks(1).sheets("è¡¨ç»“æ„")
+	EXCEL.workbooks.add( - 4167)'Ìí¼Ó¹¤×÷±í
+	EXCEL.workbooks(1).sheets(1).name = "±í½á¹¹"
+	Set SHEET                         = EXCEL.workbooks(1).sheets("±í½á¹¹")
 
 	EXCEL.workbooks(1).sheets.add
-	EXCEL.workbooks(1).sheets(1).name = "ç›®å½•"
-	Set SHEETLIST                     = EXCEL.workbooks(1).sheets("ç›®å½•")
+	EXCEL.workbooks(1).sheets(1).name = "Ä¿Â¼"
+	Set SHEETLIST                     = EXCEL.workbooks(1).sheets("Ä¿Â¼")
 	ShowTableList Model,SHEETLIST
 
 	ShowProperties Model, SHEET,SHEETLIST
 
 	EXCEL.workbooks(1).Sheets(2).Select
 	EXCEL.visible                       = True
-	'è®¾ç½®åˆ—å®½å’Œè‡ªåŠ¨æ¢è¡Œ
+	'ÉèÖÃÁĞ¿íºÍ×Ô¶¯»»ĞĞ
 	sheet.Columns(1).ColumnWidth        = 20
 	sheet.Columns(2).ColumnWidth        = 20
 	sheet.Columns(3).ColumnWidth        = 20
@@ -54,7 +54,7 @@ Else
 	sheet.Columns(1).WrapText           = True
 	sheet.Columns(2).WrapText           = True
 	sheet.Columns(4).WrapText           = True
-	'ä¸æ˜¾ç¤ºç½‘æ ¼çº¿
+	'²»ÏÔÊ¾Íø¸ñÏß
 	EXCEL.ActiveWindow.DisplayGridlines = False
 
 End If
@@ -99,25 +99,25 @@ Sub ShowTable(tab, sheet,rowIndex,sheetList)
 		sheet.cells(rowsNum, 2) = tab.code
 		'sheet.cells(rowsNum, 5).HorizontalAlignment=3
 		'sheet.cells(rowsNum, 6) = ""
-		'sheet.cells(rowsNum, 7) = "è¡¨è¯´æ˜"
+		'sheet.cells(rowsNum, 7) = "±íËµÃ÷"
 		sheet.cells(rowsNum, 3) = tab.comment
 		'sheet.cells(rowsNum, 8).HorizontalAlignment=3
 		sheet.Range(sheet.cells(rowsNum, 3),sheet.cells(rowsNum, 7)).Merge
-		'è®¾ç½®è¶…é“¾æ¥ï¼Œä»ç›®å½•ç‚¹å‡»è¡¨åå»æŸ¥çœ‹è¡¨ç»“æ„
-		'å­—æ®µä¸­æ–‡å    å­—æ®µè‹±æ–‡å    å­—æ®µç±»å‹    æ³¨é‡Š    æ˜¯å¦ä¸»é”®    æ˜¯å¦éç©º    é»˜è®¤å€¼
-		sheetList.Hyperlinks.Add sheetList.cells(rowIndex,2), "","è¡¨ç»“æ„" & "!B" & rowsNum
+		'ÉèÖÃ³¬Á´½Ó£¬´ÓÄ¿Â¼µã»÷±íÃûÈ¥²é¿´±í½á¹¹
+		'×Ö¶ÎÖĞÎÄÃû    ×Ö¶ÎÓ¢ÎÄÃû    ×Ö¶ÎÀàĞÍ    ×¢ÊÍ    ÊÇ·ñÖ÷¼ü    ÊÇ·ñ·Ç¿Õ    Ä¬ÈÏÖµ
+		sheetList.Hyperlinks.Add sheetList.cells(rowIndex,2), "","±í½á¹¹" & "!B" & rowsNum
 		rowsNum = rowsNum + 1
-		sheet.cells(rowsNum, 1) = "å­—æ®µä¸­æ–‡å"
-		sheet.cells(rowsNum, 2) = "å­—æ®µè‹±æ–‡å"
-		sheet.cells(rowsNum, 3) = "å­—æ®µç±»å‹"
-		sheet.cells(rowsNum, 4) = "æ³¨é‡Š"
-		sheet.cells(rowsNum, 5) = "æ˜¯å¦ä¸»é”®"
-		sheet.cells(rowsNum, 6) = "æ˜¯å¦éç©º"
-		sheet.cells(rowsNum, 7) = "é»˜è®¤å€¼"
-		'è®¾ç½®è¾¹æ¡†
+		sheet.cells(rowsNum, 1) = "×Ö¶ÎÖĞÎÄÃû"
+		sheet.cells(rowsNum, 2) = "×Ö¶ÎÓ¢ÎÄÃû"
+		sheet.cells(rowsNum, 3) = "×Ö¶ÎÀàĞÍ"
+		sheet.cells(rowsNum, 4) = "×¢ÊÍ"
+		sheet.cells(rowsNum, 5) = "ÊÇ·ñÖ÷¼ü"
+		sheet.cells(rowsNum, 6) = "ÊÇ·ñ·Ç¿Õ"
+		sheet.cells(rowsNum, 7) = "Ä¬ÈÏÖµ"
+		'ÉèÖÃ±ß¿ò
 		sheet.Range(sheet.cells(rowsNum - 1, 1),sheet.cells(rowsNum, 7)).Borders.LineStyle = "1"
 		'sheet.Range(sheet.cells(rowsNum-1, 4),sheet.cells(rowsNum, 9)).Borders.LineStyle = "1"
-		'å­—ä½“ä¸º10å·
+		'×ÖÌåÎª10ºÅ
 		sheet.Range(sheet.cells(rowsNum - 1, 1),sheet.cells(rowsNum, 7)).Font.Size = 10
 		Dim col ' running column
 		Dim colsNum
@@ -167,12 +167,18 @@ Sub ShowTableList(mdl, SheetList)
 	rowsNo = 1
 	' For each table
 	output "begin"
-	SheetList.cells(rowsNo, 1) = "ä¸»é¢˜"
-	SheetList.cells(rowsNo, 2) = "è¡¨ä¸­æ–‡å"
-	SheetList.cells(rowsNo, 3) = "è¡¨è‹±æ–‡å"
-	SheetList.cells(rowsNo, 4) = "è¡¨è¯´æ˜"
+	SheetList.cells(rowsNo, 1) = "Ö÷Ìâ"
+	SheetList.cells(rowsNo, 2) = "±íÖĞÎÄÃû"
+	SheetList.cells(rowsNo, 3) = "±íÓ¢ÎÄÃû"
+	SheetList.cells(rowsNo, 4) = "±íËµÃ÷"
 	rowsNo = rowsNo + 1
 	SheetList.cells(rowsNo, 1) = mdl.name
+   
+	Dim pak
+    For Each pak In mdl.Packages
+		rowsNo = rowsNo + 1
+		SheetList.cells(rowsNo, 1) = pak.name
+	next
 	Dim tab
 
 	For Each tab In mdl.tables
@@ -183,6 +189,10 @@ Sub ShowTableList(mdl, SheetList)
 			SheetList.cells(rowsNo, 2) = tab.name
 			SheetList.cells(rowsNo, 3) = tab.code
 			SheetList.cells(rowsNo, 4) = tab.comment
+         Dim diag
+         For Each diag In tab.Diagrams
+            SheetList.cells(rowsNo, 5) = SheetList.cells(rowsNo, 5)+','+diag.Name
+         next
 		End If
 
 	Next
