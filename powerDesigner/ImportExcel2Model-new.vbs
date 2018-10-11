@@ -64,7 +64,7 @@ Else
         
         HaveExcel = True
         ' Open & Create  Excel Document
-		Dim ExcelApp, x1
+        Dim ExcelApp, x1
         Set ExcelApp = CreateObject("Excel.Application")
         ExcelApp.visible=FALSE
         'ExcelApp.Workbooks.Open(INPUT_FILE)
@@ -142,7 +142,7 @@ Sub importTables(x1,mdl)
     Set ExcelSheet = Nothing
     Set ExcelBook = Nothing
     Set ExcelApp = Nothing
-	Kill ("EXCEL.EXE")
+    Kill ("EXCEL.EXE")
 
     output "导入完毕, 共导入 " + Cstr(tblCnt) + " 张表!"
     
