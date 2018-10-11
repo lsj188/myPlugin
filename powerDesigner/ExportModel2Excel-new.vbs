@@ -20,6 +20,7 @@ CONST SHOW_DISTRIBUTION_KEYS  = "Y"             '是否显示分布键   [ Y-是 N-否 ]
 CONST COL_TABLE_CODE = "C"                      '表英文名列
 CONST COL_TABLE_NAME = "D"                      '表中文名列
 CONST COL_DEAL_FLAG  = "E"                      '处理标志列
+CONST COL_TABLE_COMMENT  = "F"                  '处理描述列
 '-------------------------------------------------------------------------------
 CONST BEG_ROW = 6                               '数据区域-开始行
 CONST END_COL = "J"                             '数据区域-结束列
@@ -195,7 +196,7 @@ Private Sub getTables(CurrentFldr,CurrentObject,ExcelSheet,rowCnt)
         ExcelSheet.Cells(rowCnt,"C").Value = CurrentObject.Code
         ExcelSheet.Cells(rowCnt,"D").Value = CurrentObject.Name
         ExcelSheet.Cells(rowCnt,"E").Value = "Y"
-        ExcelSheet.Cells(rowCnt,"F").Value = ""
+        ExcelSheet.Cells(rowCnt,"F").Value = CurrentObject.comment
         rowCnt = rowCnt + 1
     else
         exit sub
@@ -213,7 +214,7 @@ sub createTableSheet(mdl)
     Dim rowIdx, menuIdx
     Dim tableCnt, colCnt
     Dim tableNum
-    Dim tableCode, tableName, tableOwner, tableFlag
+    Dim tableCode, tableName, tableOwner, tableComment, tableFlag
     tableCnt = 0
     tableNum = 0
 
@@ -244,6 +245,7 @@ sub createTableSheet(mdl)
         tableOwner = ExcelMenu.Cells(rowIdx, "B").Value
         tableCode = ExcelMenu.Cells(rowIdx, COL_TABLE_CODE).Value
         tableName = ExcelMenu.Cells(rowIdx, COL_TABLE_NAME).Value
+        tableComment = ExcelMenu.Cells(rowIdx, COL_TABLE_COMMENT).Value
         tableFlag = ExcelMenu.Cells(rowIdx, COL_DEAL_FLAG).Value
 
         If UCase(tableFlag) = "Y" AND ( Len(tableCode)>0 OR Len(tableName)>0 ) Then     '处理标志非Y则跳过
@@ -261,8 +263,8 @@ sub createTableSheet(mdl)
                 '创建Sheet页
                 Set ExcelSheet = ExcelBook.Sheets.Add(,ExcelBook.Sheets(menuIdx))       '在目录后面插入，第一个参数为空
                 
-				'excel sheet名不能超过31个字符，excel会报错
-				ExcelSheet.Name = left(tableCode,31)
+                'excel sheet名不能超过31个字符，excel会报错
+                ExcelSheet.Name = left(tableCode,31)
 
                 output "["+Cstr(tableCnt)+"] "+tableCode
 
@@ -294,6 +296,7 @@ sub createTableSheet(mdl)
                     '第四行
                     .Cells(4,"A").Value = "描述"
                     .Range("B4","E4").Merge
+                    .Cells(4,"B").Value = tableComment
 
                     '设置样式-表头
                     .Range("A2","A4").Interior.Color = D_COLOR_GREEN  '背景色-浅绿色
