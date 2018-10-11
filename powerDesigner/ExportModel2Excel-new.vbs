@@ -14,7 +14,6 @@
 Option Explicit
 '----------------------------------请按需设置-----------------------------------
 CONST GEN_MENU    = "Y"                         '是否生成目录文件 [ Y-是 N-否 ]
-CONST MENU_FILE   = "D:\File_Name.xlsx"         '目录文件路径
 CONST GEN_TABLE   = "Y"                         '是否生成模型结构 [ Y-是 N-否 ]
 CONST SHOW_DISTRIBUTION_KEYS  = "Y"             '是否显示分布键   [ Y-是 N-否 ]
 '----------------------------------目录页设置-----------------------------------
@@ -41,12 +40,14 @@ mLF = Chr(13)       '回车
 
 '定义PDM
 Dim mdl
+Dim file_path
 Dim errCount, errString
 errCount=0
 Set mdl = ActiveModel
 If ( mdl Is Nothing ) Then
     MsgBox "There is no Active Model"
 Else
+    file_path=InputBox("请输入导出文件路径")
     If UCase(GEN_MENU) = "Y" Then
         createMenuSheet mdl         '生成目录
     End If
@@ -155,7 +156,7 @@ sub createMenuSheet(mdl)
     ExcelApp.ActiveWindow.SplitColumn = 0       '列
     ExcelApp.ActiveWindow.FreezePanes = True
 
-    ExcelBook.SaveAs MENU_FILE
+    ExcelBook.SaveAs file_path
     ExcelBook.Close
     ExcelApp.Quit
     Set ExcelSheet = Nothing
@@ -218,7 +219,7 @@ sub createTableSheet(mdl)
 
     '当用户指定目录文件时，重定义输出文件，以免生成过程中出错，或对输出结果不满意时，需要重新恢复目录文件。
     Dim InputFile, OutputFile
-    InputFile = MENU_FILE
+    InputFile = file_path
     If UCase(GEN_MENU) = "N" Then
         OutputFile = Mid(InputFile, 1, InstrRev(InputFile,".")-1) + "_out" + Mid(InputFile, InstrRev(InputFile,"."))
     Else
@@ -228,7 +229,7 @@ sub createTableSheet(mdl)
     '读取目录文件
     Set ExcelApp = CreateObject("Excel.Application")
     ExcelApp.visible=FALSE
-    Set ExcelBook = ExcelApp.Workbooks.Open(MENU_FILE)
+    Set ExcelBook = ExcelApp.Workbooks.Open(file_path)
     Set ExcelMenu = ExcelBook.Sheets("目录")
     menuIdx = ExcelMenu.Index
 

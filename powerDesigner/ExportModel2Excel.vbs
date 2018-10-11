@@ -189,10 +189,7 @@ Sub ShowTableList(mdl, SheetList)
 			SheetList.cells(rowsNo, 2) = tab.name
 			SheetList.cells(rowsNo, 3) = tab.code
 			SheetList.cells(rowsNo, 4) = tab.comment
-         Dim diag
-         For Each diag In tab.Diagrams
-            SheetList.cells(rowsNo, 5) = SheetList.cells(rowsNo, 5)+','+diag.Name
-         next
+         
 		End If
 
 	Next

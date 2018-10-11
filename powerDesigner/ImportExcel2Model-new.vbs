@@ -13,9 +13,6 @@
 
 Option Explicit
 
-'----------------------------------请按需设置-----------------------------------
-CONST INPUT_FILE  = "D:\File_Name.xlsm"        '导入文件路径
-CONST LOG_FILE  = "D:\pd_2_excel.log"          '日志文件路径
 '----------------------------------目录页设置-----------------------------------
 CONST COL_TABLE_SCHEMA          = "B"           '表模式列（Owner）
 CONST COL_TABLE_CODE            = "C"           '表英文名列
@@ -43,6 +40,7 @@ mLF = Chr(13)       '回车
 
 '定义PDM
 Dim mdl
+Dim input_file, log_file
 Dim errCount, errString, errMsg
 errMsg=""
 errCount=0
@@ -50,7 +48,33 @@ Set mdl = ActiveModel
 If ( mdl Is Nothing ) Then
     MsgBox "There is no Active Model"
 Else
-    importTables mdl
+    '打开文件选择框获取导入文件
+    input_file=BrowseForFile()
+    log_file=left(input_file,instrrev(input_file,".",-1,1))+".log"
+    
+    Output "input_file "&input_file
+    output "log_file   "&log_file
+    output "========================================================"
+    
+    Dim HaveExcel
+    Dim RQ
+    RQ         = vbYes 'MsgBox("Is  Excel Installed on your machine ?", vbYesNo + vbInformation, "Confirmation")
+    
+    If RQ = vbYes Then   
+        
+        HaveExcel = True
+        ' Open & Create  Excel Document
+		Dim ExcelApp, x1
+        Set ExcelApp = CreateObject("Excel.Application")
+        ExcelApp.visible=FALSE
+        'ExcelApp.Workbooks.Open(INPUT_FILE)
+        'Set x1 = CreateObject("Excel.Application")
+        Set x1=ExcelApp.Workbooks.Open(input_file) '指定 excel文档路径
+    Else
+        HaveExcel = False
+    End If
+    
+    importTables x1,mdl
     If errCount > 0 Then
         output "错误信息: " + errMsg
     End If
@@ -60,14 +84,15 @@ Else
     End If
 End If
 
+
+    
+
 '导入表结构
-Sub importTables(mdl)
+Sub importTables(x1,mdl)
 
-    Dim ExcelApp, ExcelBook, ExcelSheet
+    Dim ExcelBook, ExcelSheet
 
-    Set ExcelApp = CreateObject("Excel.Application")
-    ExcelApp.visible=FALSE
-    Set ExcelBook = ExcelApp.Workbooks.Open(INPUT_FILE)
+    Set ExcelBook = x1
 
     '-------------------读取目录-------------------
     Dim tblSchema, tblName, tblCode, tblComment
@@ -117,12 +142,13 @@ Sub importTables(mdl)
     Set ExcelSheet = Nothing
     Set ExcelBook = Nothing
     Set ExcelApp = Nothing
+	Kill ("EXCEL.EXE")
 
     output "导入完毕, 共导入 " + Cstr(tblCnt) + " 张表!"
     
     Dim fs, ft
     Set fs = CreateObject("scripting.filesystemobject")
-    Set ft = fs.createtextfile(LOG_FILE)
+    Set ft = fs.createtextfile(log_file)
     ft.WriteLine (errMsg)
     ft.Close
     Set ft = Nothing: Set fs = Nothing
@@ -238,4 +264,45 @@ Sub createTable(mdl,ExcelBook,shtIdx,tblName,tblCode,tblComment,tblOwner)
     '    objTable.PhysicalOptions = objTable.PhysicalOptions + mLF + "distributed by (" + colDistributeKeys + ")"
     'End If
 
+End Sub
+
+'-------------------------------------
+'文件选择框win7版
+Function BrowseForFile()
+    Dim shell : Set shell = CreateObject("WScript.Shell")
+    Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim tempFolder : Set tempFolder = fso.GetSpecialFolder(2)
+    Dim tempName : tempName = fso.GetTempName()
+    Dim tempFile : Set tempFile = tempFolder.CreateTextFile(tempName & ".hta")
+    tempFile.Write _
+    "<html>" & _
+    "<head>" & _
+    "<title>Browse</title>" & _
+    "</head>" & _
+    "<body>" & _
+    "<input type='file' id='f' />" & _
+    "<script type='text/javascript'>" & _
+    "var f = document.getElementById('f');" & _
+    "f.click();" & _
+    "var shell = new ActiveXObject('WScript.Shell');" & _
+    "shell.RegWrite('HKEY_CURRENT_USER\\Volatile Environment\\MsgResp', f.value);" & _
+    "window.close();" & _
+    "</script>" & _
+    "</body>" & _
+    "</html>"
+    tempFile.Close
+    shell.Run tempFolder & "\" & tempName & ".hta", 0, True
+    BrowseForFile = shell.RegRead("HKEY_CURRENT_USER\Volatile Environment\MsgResp")
+    shell.RegDelete "HKEY_CURRENT_USER\Volatile Environment\MsgResp"
+End Function
+
+Private Sub Kill(str)
+ Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
+ Set colProcessList = objWMIService.ExecQuery("Select * from Win32_Process Where Name='" & str & "'")
+ For Each objProcess In colProcessList
+   objProcess.Terminate '结束进程
+ Next
+ Set objProcess = Nothing
+ Set colProcessList = Nothing
+ Set objWMIService = Nothing
 End Sub
