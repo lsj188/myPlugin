@@ -17,10 +17,13 @@ CONST GEN_MENU    = "Y"                         '是否生成目录文件 [ Y-是 N-否 ]
 CONST GEN_TABLE   = "Y"                         '是否生成模型结构 [ Y-是 N-否 ]
 CONST SHOW_DISTRIBUTION_KEYS  = "Y"             '是否显示分布键   [ Y-是 N-否 ]
 '----------------------------------目录页设置-----------------------------------
-CONST COL_TABLE_CODE = "C"                      '表英文名列
-CONST COL_TABLE_NAME = "D"                      '表中文名列
-CONST COL_DEAL_FLAG  = "E"                      '处理标志列
-CONST COL_TABLE_COMMENT  = "F"                  '处理描述列
+CONST COL_TABLE_ID = "A"                        '表序号
+CONST COL_TABLE_PARENT = "B"                    '表PARENT
+CONST COL_TABLE_SCHEMA = "C"                    '表模式
+CONST COL_TABLE_CODE = "D"                      '表英文名列
+CONST COL_TABLE_NAME = "E"                      '表中文名列
+CONST COL_DEAL_FLAG  = "F"                      '处理标志列
+CONST COL_TABLE_COMMENT  = "G"                  '处理描述列
 '-------------------------------------------------------------------------------
 CONST BEG_ROW = 6                               '数据区域-开始行
 CONST END_COL = "J"                             '数据区域-结束列
@@ -81,12 +84,13 @@ sub createMenuSheet(mdl)
     '目录标题栏
     With ExcelSheet
         '内容
-        .Cells(1,"A").Value = "序号"
-        .Cells(1,"B").Value = "模式名"
-        .Cells(1,"C").Value = "表英文名"
-        .Cells(1,"D").Value = "中文表名"
-        .Cells(1,"E").Value = "处理标志(Y/N)"
-        .Cells(1,"F").Value = "备注"
+        .Cells(1,COL_TABLE_ID).Value = "序号"
+        .Cells(1,COL_TABLE_PARENT).Value = "所属包"
+        .Cells(1,COL_TABLE_SCHEMA).Value = "模式名"
+        .Cells(1,COL_TABLE_CODE).Value = "表英文名"
+        .Cells(1,COL_TABLE_NAME).Value = "中文表名"
+        .Cells(1,COL_DEAL_FLAG).Value = "处理标志(Y/N)"
+        .Cells(1,COL_TABLE_COMMENT).Value = "备注"
 
         '样式-居中
         .Rows(1).HorizontalAlignment = 3      '左右居中   5-填充，左对齐，不会覆盖右边的单元格
@@ -100,14 +104,14 @@ sub createMenuSheet(mdl)
         .Columns(5).ColumnWidth = 9
         .Columns(6).ColumnWidth = 21
         '样式-四周边框
-        .Range("A1","F1").Borders(1).LineStyle = 1
-        .Range("A1","F1").Borders(2).LineStyle = 1
-        .Range("A1","F1").Borders(3).LineStyle = 1
-        .Range("A1","F1").Borders(4).LineStyle = 1
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(1).LineStyle = 1
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(2).LineStyle = 1
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(3).LineStyle = 1
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(4).LineStyle = 1
         '样式-其他
         .Rows(1).WrapText = True              '自动换行
-        .Range("A1","F1").Interior.Color = D_COLOR_BLUE   '背景色-天蓝色
-        .Range("A1","F1").Font.Size = 10                '字体
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Interior.Color = D_COLOR_BLUE   '背景色-天蓝色
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Font.Size = 10                '字体
         .Rows(1).Font.Bold = True             '粗体
     End With
 
@@ -129,21 +133,22 @@ sub createMenuSheet(mdl)
     '调整整个数据区域样式
     Dim rowEnd
     rowEnd = rowCnt-1                '最后一行行号
-    With ExcelSheet.Range("A2","F"+Cstr(rowEnd))
+    With ExcelSheet.Range(COL_TABLE_ID+"2","F"+Cstr(rowEnd))
         .Borders(1).LineStyle = 1                       '四周边框
         .Borders(2).LineStyle = 1
         .Borders(3).LineStyle = 1
         .Borders(4).LineStyle = 1
     End With
-    ExcelSheet.Range("A1","F"+Cstr(rowEnd)).Font.Size = 10       '字体
+    ExcelSheet.Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+Cstr(rowEnd)).Font.Size = 10       '字体
 
     '按层名、表名排序
     ExcelApp.AddCustomList Array("ODM", "FDM", "ADM", "MDM", "PUBLIC")
     ExcelSheet.Sort.SortFields.Clear
-    ExcelSheet.Sort.SortFields.Add ExcelSheet.Range("B2","B"+Cstr(rowEnd)), 0, 1, "ODM,FDM,ADM,DMD,PUBLIC", 0
-    ExcelSheet.Sort.SortFields.Add ExcelSheet.Range("C2","C"+Cstr(rowEnd)), 0, 1, "", 0
+    'ExcelSheet.Sort.SortFields.Add ExcelSheet.Range(COL_TABLE_SCHEMA+"2",COL_TABLE_SCHEMA+Cstr(rowEnd)), 0, 1, "ODM,FDM,ADM,DMD,PUBLIC", 0
+    ExcelSheet.Sort.SortFields.Add ExcelSheet.Range(COL_TABLE_PARENT+"2",COL_TABLE_PARENT+Cstr(rowEnd)), 0, 1, "", 0
+    ExcelSheet.Sort.SortFields.Add ExcelSheet.Range(COL_TABLE_CODE+"2",COL_TABLE_CODE+Cstr(rowEnd)), 0, 1, "", 0
     With ExcelSheet.Sort
-        .SetRange ExcelSheet.Range("B1","F"+Cstr(rowEnd))
+        .SetRange ExcelSheet.Range(COL_TABLE_PARENT+"1",COL_TABLE_COMMENT+Cstr(rowEnd))
         .Header = 1
         .MatchCase = False
         .Apply
@@ -187,16 +192,17 @@ Private Sub getTables(CurrentFldr,CurrentObject,ExcelSheet,rowCnt)
     Dim col
     Dim colType
     If CurrentObject.IsKindOf(cls_Table) then
-        ExcelSheet.Cells(rowCnt,"A").Value = rowCnt - 1
+        ExcelSheet.Cells(rowCnt,COL_TABLE_ID).Value = rowCnt - 1
+        ExcelSheet.Cells(rowCnt,COL_TABLE_PARENT).Value = CurrentObject.parent
         If ( CurrentObject.Owner Is Nothing ) Then
-            ExcelSheet.Cells(rowCnt,"B").Value = "PUBLIC"
+            ExcelSheet.Cells(rowCnt,COL_TABLE_SCHEMA).Value = "PUBLIC"
         Else
-            ExcelSheet.Cells(rowCnt,"B").Value = CurrentObject.Owner.Code
+            ExcelSheet.Cells(rowCnt,COL_TABLE_SCHEMA).Value = CurrentObject.Owner.Code
         End If
-        ExcelSheet.Cells(rowCnt,"C").Value = CurrentObject.Code
-        ExcelSheet.Cells(rowCnt,"D").Value = CurrentObject.Name
-        ExcelSheet.Cells(rowCnt,"E").Value = "Y"
-        ExcelSheet.Cells(rowCnt,"F").Value = CurrentObject.comment
+        ExcelSheet.Cells(rowCnt,COL_TABLE_CODE).Value = CurrentObject.Code
+        ExcelSheet.Cells(rowCnt,COL_TABLE_NAME).Value = CurrentObject.Name
+        ExcelSheet.Cells(rowCnt,COL_DEAL_FLAG).Value = "Y"
+        ExcelSheet.Cells(rowCnt,COL_TABLE_COMMENT).Value = CurrentObject.comment
         rowCnt = rowCnt + 1
     else
         exit sub
@@ -235,14 +241,14 @@ sub createTableSheet(mdl)
     menuIdx = ExcelMenu.Index
 
     For rowIdx = 2 To MAX_TABLES+2
-        If ExcelMenu.Cells(rowIdx, "A").Value = "" Then
+        If ExcelMenu.Cells(rowIdx, COL_TABLE_ID).Value = "" Then
             Exit For
         Else
             tableNum = tableNum + 1
         End If
 
         '获取表信息
-        tableOwner = ExcelMenu.Cells(rowIdx, "B").Value
+        tableOwner = ExcelMenu.Cells(rowIdx, COL_TABLE_SCHEMA).Value
         tableCode = ExcelMenu.Cells(rowIdx, COL_TABLE_CODE).Value
         tableName = ExcelMenu.Cells(rowIdx, COL_TABLE_NAME).Value
         tableComment = ExcelMenu.Cells(rowIdx, COL_TABLE_COMMENT).Value
@@ -264,12 +270,14 @@ sub createTableSheet(mdl)
                 Set ExcelSheet = ExcelBook.Sheets.Add(,ExcelBook.Sheets(menuIdx))       '在目录后面插入，第一个参数为空
                 
                 'excel sheet名不能超过31个字符，excel会报错
-                ExcelSheet.Name = left(tableCode,31)
+                'ExcelSheet.Name = left(tableCode,31)
+                ExcelSheet.Name = left(tableName,31)
 
                 output "["+Cstr(tableCnt)+"] "+tableCode
 
                 '添加自定义名称  范围-工作簿
-                ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C3"       'R=row C=col R2C3=$2$3=C2
+                'ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C3"       'R=row C=col R2C3=$2$3=C2
+                ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"A1"       'R=row C=col R2C3=$2$3=C2
 
                 '生成表头
                 With ExcelSheet

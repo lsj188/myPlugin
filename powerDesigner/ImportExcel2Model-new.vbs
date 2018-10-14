@@ -14,11 +14,13 @@
 Option Explicit
 
 '----------------------------------目录页设置-----------------------------------
-CONST COL_TABLE_SCHEMA          = "B"           '表模式列（Owner）
-CONST COL_TABLE_CODE            = "C"           '表英文名列
-CONST COL_TABLE_NAME            = "D"           '表中文名列
-CONST COL_DEAL_FLAG             = "E"           '处理标志列
-CONST COL_TABLE_COMMENT         = "F"           '表说明列（Comment）
+CONST COL_TABLE_ID = "A"                        '表序号
+CONST COL_TABLE_PARENT = "B"                    '表PARENT
+CONST COL_TABLE_SCHEMA = "C"                    '表模式
+CONST COL_TABLE_CODE = "D"                      '表英文名列
+CONST COL_TABLE_NAME = "E"                      '表中文名列
+CONST COL_DEAL_FLAG  = "F"                      '处理标志列
+CONST COL_TABLE_COMMENT  = "G"                  '表说明
 '----------------------------------内容页设置-----------------------------------
 CONST COL_COL_NAME              = "B"           '字段中文名
 CONST COL_COL_CODE              = "C"           '字段英文名
@@ -118,7 +120,8 @@ Sub importTables(x1,mdl)
             '-------------------读取Sheet页-------------------
             On Error Resume Next
             Dim shtIdx
-            shtIdx = ExcelBook.Worksheets(tblCode).Index
+            'shtIdx = ExcelBook.Worksheets(tblCode).Index
+            shtIdx = ExcelBook.Worksheets(tblName).Index
             If Err.Number <> 0 Then
                 output "Table[" + tblCode + "][" + tblName + "] 找不到该Sheet页！"
                 errCount  = errCount + 1
