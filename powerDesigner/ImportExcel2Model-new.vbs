@@ -223,30 +223,31 @@ Sub createTable(mdl,ExcelBook,shtIdx,tblName,tblCode,tblComment,tblOwner)
 
         '建字段
         With ExcelBook
+            
+            '检查表字段是否已经存在
+            Dim objColumn
+            set objColumn = objTable.FindChildByName(colName,cls_Column)
+            If ( objColumn Is Nothing ) Then
+            Else
+                output "字段[" + colName + "]已经存在！"
+                errCount  = errCount + 1
+                errString = cstr(now) + " <" + cstr(errCount) + "> [字段错误]---[" + objTable.Name + "." + colName + "] 已经存在！" + mLF
+                errMsg = errMsg + errString
+                
+                Exit Sub
+            End If        
+            set objColumn = objTable.FindChildByCode(colCode,cls_Column)
+            If ( objColumn Is Nothing ) Then
+            Else
+                output "字段[" + colCode + "]已经存在！"
+                errCount  = errCount + 1
+                errString = cstr(now) + " <" + cstr(errCount) + "> [字段错误]---[" + objTable.Name + "." + colCode + "] 已经存在！" + mLF
+                errMsg = errMsg + errString
+                Exit Sub
+            End If     
+			
+            '创建字段			
             Set col = objTable.Columns.CreateNew
-            
-            '检查表是否已经存在
-                Dim objColumn
-                    set objColumn = objTable.FindChildByName(colName,cls_Column)
-                    If ( objColumn Is Nothing ) Then
-                    Else
-                        output "字段[" + colName + "]已经存在！"
-                        errCount  = errCount + 1
-                        errString = cstr(now) + " <" + cstr(errCount) + "> [字段错误]---[" + objTable.Name + "." + colName + "] 已经存在！" + mLF
-                        errMsg = errMsg + errString
-                        
-                        Exit Sub
-                    End If        
-                    set objColumn = objTable.FindChildByCode(colCode,cls_Column)
-                    If ( objColumn Is Nothing ) Then
-                    Else
-                        output "字段[" + colCode + "]已经存在！"
-                        errCount  = errCount + 1
-                        errString = cstr(now) + " <" + cstr(errCount) + "> [字段错误]---[" + objTable.Name + "." + colCode + "] 已经存在！" + mLF
-                        errMsg = errMsg + errString
-                        Exit Sub
-                    End If        
-            
             col.Name = colName
             col.Code = UCase(colCode)
             col.DataType = UCase(colDataType)

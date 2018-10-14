@@ -85,7 +85,7 @@ sub createMenuSheet(mdl)
     With ExcelSheet
         '内容
         .Cells(1,COL_TABLE_ID).Value = "序号"
-        .Cells(1,COL_TABLE_PARENT).Value = "所属包"
+        .Cells(1,COL_TABLE_PARENT).Value = "父级"
         .Cells(1,COL_TABLE_SCHEMA).Value = "模式名"
         .Cells(1,COL_TABLE_CODE).Value = "表英文名"
         .Cells(1,COL_TABLE_NAME).Value = "中文表名"
@@ -133,7 +133,7 @@ sub createMenuSheet(mdl)
     '调整整个数据区域样式
     Dim rowEnd
     rowEnd = rowCnt-1                '最后一行行号
-    With ExcelSheet.Range(COL_TABLE_ID+"2","F"+Cstr(rowEnd))
+    With ExcelSheet.Range(COL_TABLE_ID+"2",COL_TABLE_COMMENT+Cstr(rowEnd))
         .Borders(1).LineStyle = 1                       '四周边框
         .Borders(2).LineStyle = 1
         .Borders(3).LineStyle = 1
@@ -277,7 +277,7 @@ sub createTableSheet(mdl)
 
                 '添加自定义名称  范围-工作簿
                 'ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C3"       'R=row C=col R2C3=$2$3=C2
-                ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"A1"       'R=row C=col R2C3=$2$3=C2
+                ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C5"       'R=row C=col R2C3=$2$3=C2
 
                 '生成表头
                 With ExcelSheet
@@ -367,6 +367,7 @@ sub createTableSheet(mdl)
 
                 '创建目录中的超链接
                 ExcelMenu.Hyperlinks.Add ExcelMenu.Range(COL_TABLE_CODE+Cstr(rowIdx)),"",ExcelSheet.Name+"!A1","",ExcelSheet.Name
+                ExcelMenu.Hyperlinks.Add ExcelMenu.Range(COL_TABLE_NAME+Cstr(rowIdx)),"",ExcelSheet.Name+"!A1","",ExcelSheet.Name
                 ExcelMenu.Range(COL_TABLE_CODE+Cstr(rowIdx)).Font.Size = 10
                 '更新目录中的表中文名
                 ExcelMenu.Range(COL_TABLE_NAME+Cstr(rowIdx)).Value = tableName
