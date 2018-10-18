@@ -59,7 +59,7 @@ Else
 
     '处理导出文件目录
     file_path=InputBox("input file path")
-    if pathExists(file_path)=0 then
+    if not pathExists(file_path) then
         MsgBox("Input path is not exists!")
     end if
     
