@@ -599,34 +599,35 @@ Sub getColumns(mdl,ExcelSheet,tableCode,colCnt)
     Exit Sub
 End Sub
 
-Function pathExists(file_path)
+Function pathExists(filespec)
     Dim fso
     Set fso=CreateObject("Scripting.FileSystemObject")        
-    If fso.folderExists(file_path) Then         
-       pathExists=1
+    If fso.folderExists(filespec) Then         
+       pathExists=True
     Else 
-       pathExists=0
+       pathExists=False
     End If
 end function
 
 Function IsExitAFile(filespec)
-        Dim fso
-        Set fso=CreateObject("Scripting.FileSystemObject")        
-        If fso.fileExists(filespec) Then         
+    Dim fso
+    Set fso=CreateObject("Scripting.FileSystemObject")        
+    If fso.fileExists(filespec) Then         
         IsExitAFile=True        
-        Else IsExitAFile=False        
-        End If
+    Else 
+        IsExitAFile=False        
+    End If
 End Function 
 
 Sub CreateAFile(filespec)
-        Dim fso
-        Set fso=CreateObject("Scripting.FileSystemObject")
-        fso.CreateTextFile(filespec)
+    Dim fso
+    Set fso=CreateObject("Scripting.FileSystemObject")
+    fso.CreateTextFile(filespec)
 End Sub
 
 Sub DeleteAFile(filespec)
-        Dim fso
-        Set fso= CreateObject("Scripting.FileSystemObject")
-        fso.DeleteFile(filespec)
+    Dim fso
+    Set fso= CreateObject("Scripting.FileSystemObject")
+    fso.DeleteFile(filespec)
 End Sub
 
