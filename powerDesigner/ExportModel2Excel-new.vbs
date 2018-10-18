@@ -2,7 +2,7 @@
 '* File:     export_excel.vbs
 '* Title:    将模型导出到excel
 '* Author:   lsj qq:273364475
-'* Created:  2017-11-09
+'* Created:  2018-10-18
 '* Mod By:   
 '* Modified: 
 '* Version:  1.0
@@ -17,7 +17,7 @@ CONST GEN_MENU    = "Y"                         '是否生成目录文件 [ Y-�
 CONST GEN_TABLE   = "Y"                         '是否生成模型结构 [ Y-是 N-否 ]
 CONST SHOW_DISTRIBUTION_KEYS  = "Y"             '是否显示分布键   [ Y-是 N-否 ]
 CONST ONE_PKG_ONE_FILE  = "Y"                   '是否一个包生成一个文件   [ Y-是 N-否 ]
-CONST ONE_TYPE_ONE_FILE  = "Y"                  '是否一种类型生成一个文件   [ Y-是 N-否 ]
+CONST ONE_TYPE_ONE_FILE  = "N"                  '是否一种类型生成一个文件   [ Y-是 N-否 ]
 '----------------------------------目录页设置-----------------------------------
 CONST COL_TABLE_ID = "A"                        '表序号
 CONST COL_TABLE_PARENT = "B"                    '表PARENT
@@ -56,52 +56,65 @@ Set mdl = ActiveModel
 If ( mdl Is Nothing ) Then
     MsgBox "There is no Active Model"
 Else
+
+    '处理导出文件目录
     file_path=InputBox("input file path")
-	if pathExists(file_path)=0 then
-	    MsgBox("Input path is not exists!")
-	end if
-	
-	if UCase(ONE_PKG_ONE_FILE)="Y" then
-	    for each pkg in mdl.packages
-		    for each type_name in tabtypes
-			    file_name=file_path+pkg.name+"-"+type_name+".xlsx"
-				tableCnt=0
-		        If UCase(GEN_MENU) = "Y" Then
-                    tableCnt=createMenuSheet(mdl,pkg.name,type_name,file_name)         '生成目录
-                End If
-                
-                If UCase(GEN_TABLE) = "Y" Then
-				    if tableCnt>0 then
-                        createTableSheet mdl,file_name        '根据目录生成表结构
-					end if
-                End If
-                
-                If errCount > 0 Then
-                    output "错误信息: " + errString
-                End If
-                MsgBox "处理完毕,共有"+Cstr(errCount)+"个错误!"
-			next
-		next
-	else
-	    file_name=file_path+mdl.name+"-all.xlsx"
-		tableCnt=0
-		If UCase(GEN_MENU) = "Y" Then
-            tableCnt=createMenuSheet(mdl,"all","all",file_name)         '生成目录
-        End If
-        
-        If UCase(GEN_TABLE) = "Y" Then
-            if tableCnt>0 then
-                createTableSheet mdl,file_name        '根据目录生成表结构
-			end if
-        End If
-        
-        If errCount > 0 Then
-            output "错误信息: " + errString
-        End If
-        MsgBox "处理完毕,共有"+Cstr(errCount)+"个错误!"
-	end if
+    if pathExists(file_path)=0 then
+        MsgBox("Input path is not exists!")
+    end if
+    
+    '是否一个包生成一个文件
+    if UCase(ONE_PKG_ONE_FILE)="Y" then
+        for each pkg in mdl.packages
+             
+            '是否一种类型成一个文件
+            if UCase(ONE_TYPE_ONE_FILE)="Y" then
+                for each type_name in tabtypes
+                    start mdl,pkg.name,type_name,file_path
+                next
+            else
+                start mdl,pkg.name,"all",file_path
+            end if
+            
+        next
+    else
+        start mdl,"all","all",file_path
+    end if
       
 End If
+
+'-------------------------------------------------------------------------------
+'入口程序
+'-------------------------------------------------------------------------------
+sub start(mdl,pkg_name,type_name,file_path)
+    dim tableCnt,file_name
+    if LCase(pkg_name)<>"all" then
+        file_name=file_path+pkg_name+"-"+type_name+".xlsx"
+    else
+        file_name=file_path+mdl.name+"-"+type_name+".xlsx"
+    end if
+    
+    tableCnt=0
+    If UCase(GEN_MENU) = "Y" Then
+        tableCnt=createMenuSheet(mdl,pkg_name,type_name,file_name)         '生成目录
+    End If
+    
+    If UCase(GEN_TABLE) = "Y" Then
+        
+        '目录中无表，删除目录文件
+        if tableCnt>0 then
+            createTableSheet mdl,file_name        '根据目录生成表结构
+        else
+            DeleteAFile(file_name)
+            output "*删除空文件" & file_name
+        end if
+    End If
+    
+    If errCount > 0 Then
+        output "错误信息: " + errString
+    End If
+    MsgBox "处理完毕,共有"+Cstr(errCount)+"个错误!"
+end sub
 
 '-------------------------------------------------------------------------------
 '生成目录
@@ -206,7 +219,7 @@ Function createMenuSheet(mdl,pkg_name,type_name,file_name)
     Set ExcelBook = Nothing
     Set ExcelApp = Nothing
 
-    output "表清单生成完毕, 共 " + Cstr(rowCnt-2) + " 张表!"
+    output "表清单生成完毕("+file_name+"), 共 " + Cstr(rowCnt-2) + " 张表!"
     createMenuSheet=rowCnt-2
 End Function
 
@@ -215,25 +228,25 @@ End Function
 Private Sub ListObjects(fldr,pkg_name,type_name,ExcelSheet,rowCnt)
     Dim obj
     For Each obj In fldr.children
-	    if LCase(type_name)<>"all" then
-		    if (instr(obj.name,type_name)<>0) then
-			    getTables fldr,obj,ExcelSheet,rowCnt
-			end if
-		else
-		    getTables fldr,obj,ExcelSheet,rowCnt
-		end if
+        if LCase(type_name)<>"all" then
+            if (instr(obj.name,type_name)<>0) then
+                getTables fldr,obj,ExcelSheet,rowCnt
+            end if
+        else
+            getTables fldr,obj,ExcelSheet,rowCnt
+        end if
         
     Next
 
     Dim f
     For Each f In fldr.Packages
-	    if LCase(pkg_name)<>"all" then
-		    if f.name=pkg_name then
-			    ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
-			end if
-		else
-		    ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
-		end if
+        if LCase(pkg_name)<>"all" then
+            if f.name=pkg_name then
+                ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
+            end if
+        else
+            ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
+        end if
         
     Next
 End Sub
@@ -596,4 +609,24 @@ Function pathExists(file_path)
     End If
 end function
 
+Function IsExitAFile(filespec)
+        Dim fso
+        Set fso=CreateObject("Scripting.FileSystemObject")        
+        If fso.fileExists(filespec) Then         
+        IsExitAFile=True        
+        Else IsExitAFile=False        
+        End If
+End Function 
+
+Sub CreateAFile(filespec)
+        Dim fso
+        Set fso=CreateObject("Scripting.FileSystemObject")
+        fso.CreateTextFile(filespec)
+End Sub
+
+Sub DeleteAFile(filespec)
+        Dim fso
+        Set fso= CreateObject("Scripting.FileSystemObject")
+        fso.DeleteFile(filespec)
+End Sub
 
