@@ -1,6 +1,6 @@
 '******************************************************************************
 '* File:     export_excel.vbs
-'* Title:    ½«Ä£ĞÍµ¼³öµ½excel
+'* Title:    å°†æ¨¡å‹å¯¼å‡ºåˆ°excel
 '* Author:   lsj qq:273364475
 '* Created:  2017-11-09
 '* Mod By:   
@@ -12,66 +12,103 @@
 
 '******************************************************************************
 Option Explicit
-'----------------------------------Çë°´ĞèÉèÖÃ-----------------------------------
-CONST GEN_MENU    = "Y"                         'ÊÇ·ñÉú³ÉÄ¿Â¼ÎÄ¼ş [ Y-ÊÇ N-·ñ ]
-CONST GEN_TABLE   = "Y"                         'ÊÇ·ñÉú³ÉÄ£ĞÍ½á¹¹ [ Y-ÊÇ N-·ñ ]
-CONST SHOW_DISTRIBUTION_KEYS  = "Y"             'ÊÇ·ñÏÔÊ¾·Ö²¼¼ü   [ Y-ÊÇ N-·ñ ]
-'----------------------------------Ä¿Â¼Ò³ÉèÖÃ-----------------------------------
-CONST COL_TABLE_ID = "A"                        '±íĞòºÅ
-CONST COL_TABLE_PARENT = "B"                    '±íPARENT
-CONST COL_TABLE_SCHEMA = "C"                    '±íÄ£Ê½
-CONST COL_TABLE_CODE = "D"                      '±íÓ¢ÎÄÃûÁĞ
-CONST COL_TABLE_NAME = "E"                      '±íÖĞÎÄÃûÁĞ
-CONST COL_DEAL_FLAG  = "F"                      '´¦Àí±êÖ¾ÁĞ
-CONST COL_TABLE_COMMENT  = "G"                  '´¦ÀíÃèÊöÁĞ
+'----------------------------------è¯·æŒ‰éœ€è®¾ç½®-----------------------------------
+CONST GEN_MENU    = "Y"                         'æ˜¯å¦ç”Ÿæˆç›®å½•æ–‡ä»¶ [ Y-æ˜¯ N-å¦ ]
+CONST GEN_TABLE   = "Y"                         'æ˜¯å¦ç”Ÿæˆæ¨¡å‹ç»“æ„ [ Y-æ˜¯ N-å¦ ]
+CONST SHOW_DISTRIBUTION_KEYS  = "Y"             'æ˜¯å¦æ˜¾ç¤ºåˆ†å¸ƒé”®   [ Y-æ˜¯ N-å¦ ]
+CONST ONE_PKG_ONE_FILE  = "Y"                   'æ˜¯å¦ä¸€ä¸ªåŒ…ç”Ÿæˆä¸€ä¸ªæ–‡ä»¶   [ Y-æ˜¯ N-å¦ ]
+CONST ONE_TYPE_ONE_FILE  = "Y"                  'æ˜¯å¦ä¸€ç§ç±»å‹ç”Ÿæˆä¸€ä¸ªæ–‡ä»¶   [ Y-æ˜¯ N-å¦ ]
+'----------------------------------ç›®å½•é¡µè®¾ç½®-----------------------------------
+CONST COL_TABLE_ID = "A"                        'è¡¨åºå·
+CONST COL_TABLE_PARENT = "B"                    'è¡¨PARENT
+CONST COL_TABLE_SCHEMA = "C"                    'è¡¨æ¨¡å¼
+CONST COL_TABLE_CODE = "D"                      'è¡¨è‹±æ–‡ååˆ—
+CONST COL_TABLE_NAME = "E"                      'è¡¨ä¸­æ–‡ååˆ—
+CONST COL_DEAL_FLAG  = "F"                      'å¤„ç†æ ‡å¿—åˆ—
+CONST COL_TABLE_COMMENT  = "G"                  'å¤„ç†æè¿°åˆ—
 '-------------------------------------------------------------------------------
-CONST BEG_ROW = 6                               'Êı¾İÇøÓò-¿ªÊ¼ĞĞ
-CONST END_COL = "J"                             'Êı¾İÇøÓò-½áÊøÁĞ
-CONST MAX_TABLES = 1000                         '±íÊıÁ¿ÉÏÏŞ
+CONST BEG_ROW = 6                               'æ•°æ®åŒºåŸŸ-å¼€å§‹è¡Œ
+CONST END_COL = "J"                             'æ•°æ®åŒºåŸŸ-ç»“æŸåˆ—
+CONST MAX_TABLES = 1000                         'è¡¨æ•°é‡ä¸Šé™
 
-CONST DATA_TYPE_DATE_LEN      = 10              'DATEÀàĞÍÊı¾İ³¤¶È
-CONST DATA_TYPE_TIMESTAMP_LEN = 19              'TIMESTAMPÀàĞÍÊı¾İ³¤¶È
-CONST DATA_TYPE_INTEGER_LEN   = 12              'INTEGERÀàĞÍÊı¾İ³¤¶È
+CONST DATA_TYPE_DATE_LEN      = 10              'DATEç±»å‹æ•°æ®é•¿åº¦
+CONST DATA_TYPE_TIMESTAMP_LEN = 19              'TIMESTAMPç±»å‹æ•°æ®é•¿åº¦
+CONST DATA_TYPE_INTEGER_LEN   = 12              'INTEGERç±»å‹æ•°æ®é•¿åº¦
 
-CONST D_COLOR_BLUE     = 16764057               'ÌìÀ¶É«
-CONST D_COLOR_GREEN    = 13434828               'Ç³ÂÌÉ«
-CONST D_COLOR_ORAGNE   = 49407                  '³ÈÉ«
+CONST D_COLOR_BLUE     = 16764057               'å¤©è“è‰²
+CONST D_COLOR_GREEN    = 13434828               'æµ…ç»¿è‰²
+CONST D_COLOR_ORAGNE   = 49407                  'æ©™è‰²
 
 Dim mCR,mLF
-mCR = Chr(10)       '»»ĞĞ
-mLF = Chr(13)       '»Ø³µ
+mCR = Chr(10)       'æ¢è¡Œ
+mLF = Chr(13)       'å›è½¦
 '-------------------------------------------------------------------------------
+'è¡¨å…³é”®å­—ç±»å‹ï¼Œæ–¹ä¾¿åé¢å°†è¡¨åˆ†ç±»åˆ°ä¸åŒçš„æ–‡ä»¶ä¸­ï¼Œæ ¹æ®éœ€è¦ä¿®æ”¹
+dim tabtypes
+tabtypes=Array("æ±‡æ€»","äº‹å®","ç»´åº¦")
 
-'¶¨ÒåPDM
+'å®šä¹‰PDM
 Dim mdl
-Dim file_path
-Dim errCount, errString
+Dim file_path,file_name,pkg,type_name
+Dim tableCnt,errCount, errString
 errCount=0
 Set mdl = ActiveModel
 If ( mdl Is Nothing ) Then
     MsgBox "There is no Active Model"
 Else
-    file_path=InputBox("ÇëÊäÈëµ¼³öÎÄ¼şÂ·¾¶")
-    If UCase(GEN_MENU) = "Y" Then
-        createMenuSheet mdl         'Éú³ÉÄ¿Â¼
-    End If
-
-    If UCase(GEN_TABLE) = "Y" Then
-        createTableSheet mdl        '¸ù¾İÄ¿Â¼Éú³É±í½á¹¹
-    End If
-
-    If errCount > 0 Then
-        output "´íÎóĞÅÏ¢: " + errString
-    End If
-    MsgBox "´¦ÀíÍê±Ï,¹²ÓĞ"+Cstr(errCount)+"¸ö´íÎó!"
+    file_path=InputBox("input file path")
+	if pathExists(file_path)=0 then
+	    MsgBox("Input path is not exists!")
+	end if
+	
+	if UCase(ONE_PKG_ONE_FILE)="Y" then
+	    for each pkg in mdl.packages
+		    for each type_name in tabtypes
+			    file_name=file_path+pkg.name+"-"+type_name+".xlsx"
+				tableCnt=0
+		        If UCase(GEN_MENU) = "Y" Then
+                    tableCnt=createMenuSheet(mdl,pkg.name,type_name,file_name)         'ç”Ÿæˆç›®å½•
+                End If
+                
+                If UCase(GEN_TABLE) = "Y" Then
+				    if tableCnt>0 then
+                        createTableSheet mdl,file_name        'æ ¹æ®ç›®å½•ç”Ÿæˆè¡¨ç»“æ„
+					end if
+                End If
+                
+                If errCount > 0 Then
+                    output "é”™è¯¯ä¿¡æ¯: " + errString
+                End If
+                MsgBox "å¤„ç†å®Œæ¯•,å…±æœ‰"+Cstr(errCount)+"ä¸ªé”™è¯¯!"
+			next
+		next
+	else
+	    file_name=file_path+mdl.name+"-all.xlsx"
+		tableCnt=0
+		If UCase(GEN_MENU) = "Y" Then
+            tableCnt=createMenuSheet(mdl,"all","all",file_name)         'ç”Ÿæˆç›®å½•
+        End If
+        
+        If UCase(GEN_TABLE) = "Y" Then
+            if tableCnt>0 then
+                createTableSheet mdl,file_name        'æ ¹æ®ç›®å½•ç”Ÿæˆè¡¨ç»“æ„
+			end if
+        End If
+        
+        If errCount > 0 Then
+            output "é”™è¯¯ä¿¡æ¯: " + errString
+        End If
+        MsgBox "å¤„ç†å®Œæ¯•,å…±æœ‰"+Cstr(errCount)+"ä¸ªé”™è¯¯!"
+	end if
+      
 End If
 
 '-------------------------------------------------------------------------------
-'Éú³ÉÄ¿Â¼
-'   ĞòºÅ|Ä£Ê½Ãû|±íÃû|´¦Àí±êÖ¾(Y/N)|ÖĞÎÄ±íÃû|±¸×¢
-'   ´¦Àí±êÖ¾Ä¬ÈÏÈ«²¿ÎªY
+'ç”Ÿæˆç›®å½•
+'   åºå·|æ¨¡å¼å|è¡¨å|å¤„ç†æ ‡å¿—(Y/N)|ä¸­æ–‡è¡¨å|å¤‡æ³¨
+'   å¤„ç†æ ‡å¿—é»˜è®¤å…¨éƒ¨ä¸ºY
 '-------------------------------------------------------------------------------
-sub createMenuSheet(mdl)
+Function createMenuSheet(mdl,pkg_name,type_name,file_name)
 
     Dim ExcelApp, ExcelBook, ExcelSheet
 
@@ -79,69 +116,69 @@ sub createMenuSheet(mdl)
     ExcelApp.visible=FALSE
     Set ExcelBook = ExcelApp.Workbooks.Add
     Set ExcelSheet = ExcelBook.Sheets.Add
-    ExcelSheet.Name = "Ä¿Â¼"
+    ExcelSheet.Name = "ç›®å½•"
 
-    'Ä¿Â¼±êÌâÀ¸
+    'ç›®å½•æ ‡é¢˜æ 
     With ExcelSheet
-        'ÄÚÈİ
-        .Cells(1,COL_TABLE_ID).Value = "ĞòºÅ"
-        .Cells(1,COL_TABLE_PARENT).Value = "¸¸¼¶"
-        .Cells(1,COL_TABLE_SCHEMA).Value = "Ä£Ê½Ãû"
-        .Cells(1,COL_TABLE_CODE).Value = "±íÓ¢ÎÄÃû"
-        .Cells(1,COL_TABLE_NAME).Value = "ÖĞÎÄ±íÃû"
-        .Cells(1,COL_DEAL_FLAG).Value = "´¦Àí±êÖ¾(Y/N)"
-        .Cells(1,COL_TABLE_COMMENT).Value = "±¸×¢"
+        'å†…å®¹
+        .Cells(1,COL_TABLE_ID).Value = "åºå·"
+        .Cells(1,COL_TABLE_PARENT).Value = "çˆ¶çº§"
+        .Cells(1,COL_TABLE_SCHEMA).Value = "æ¨¡å¼å"
+        .Cells(1,COL_TABLE_CODE).Value = "è¡¨è‹±æ–‡å"
+        .Cells(1,COL_TABLE_NAME).Value = "ä¸­æ–‡è¡¨å"
+        .Cells(1,COL_DEAL_FLAG).Value = "å¤„ç†æ ‡å¿—(Y/N)"
+        .Cells(1,COL_TABLE_COMMENT).Value = "å¤‡æ³¨"
 
-        'ÑùÊ½-¾ÓÖĞ
-        .Rows(1).HorizontalAlignment = 3      '×óÓÒ¾ÓÖĞ   5-Ìî³ä£¬×ó¶ÔÆë£¬²»»á¸²¸ÇÓÒ±ßµÄµ¥Ôª¸ñ
-        .Rows(1).VerticalAlignment = 2        'ÉÏÏÂ¾ÓÖĞ
-        'ÑùÊ½-¿í¸ß
-        .Rows(1).RowHeight = 1/0.035          '¸ß1ÀåÃ×
-        .Columns(1).ColumnWidth = 5           '¿í£¬µ¥Î»£º×Ö·û
+        'æ ·å¼-å±…ä¸­
+        .Rows(1).HorizontalAlignment = 3      'å·¦å³å±…ä¸­   5-å¡«å……ï¼Œå·¦å¯¹é½ï¼Œä¸ä¼šè¦†ç›–å³è¾¹çš„å•å…ƒæ ¼
+        .Rows(1).VerticalAlignment = 2        'ä¸Šä¸‹å±…ä¸­
+        'æ ·å¼-å®½é«˜
+        .Rows(1).RowHeight = 1/0.035          'é«˜1å˜ç±³
+        .Columns(1).ColumnWidth = 5           'å®½ï¼Œå•ä½ï¼šå­—ç¬¦
         .Columns(2).ColumnWidth = 6
         .Columns(3).ColumnWidth = 31
         .Columns(4).ColumnWidth = 41
         .Columns(5).ColumnWidth = 9
         .Columns(6).ColumnWidth = 21
-        'ÑùÊ½-ËÄÖÜ±ß¿ò
+        'æ ·å¼-å››å‘¨è¾¹æ¡†
         .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(1).LineStyle = 1
         .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(2).LineStyle = 1
         .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(3).LineStyle = 1
         .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Borders(4).LineStyle = 1
-        'ÑùÊ½-ÆäËû
-        .Rows(1).WrapText = True              '×Ô¶¯»»ĞĞ
-        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Interior.Color = D_COLOR_BLUE   '±³¾°É«-ÌìÀ¶É«
-        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Font.Size = 10                '×ÖÌå
-        .Rows(1).Font.Bold = True             '´ÖÌå
+        'æ ·å¼-å…¶ä»–
+        .Rows(1).WrapText = True              'è‡ªåŠ¨æ¢è¡Œ
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Interior.Color = D_COLOR_BLUE   'èƒŒæ™¯è‰²-å¤©è“è‰²
+        .Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+"1").Font.Size = 10                'å­—ä½“
+        .Rows(1).Font.Bold = True             'ç²—ä½“
     End With
 
 
     Dim rowCnt
     rowCnt = 2
 
-    'Éú³É±íÇåµ¥
-    output "¿ªÊ¼Éú³É±íÇåµ¥..."
-    ListObjects mdl,ExcelSheet,rowCnt       '±éÀúÄ£ĞÍ
+    'ç”Ÿæˆè¡¨æ¸…å•
+    output "å¼€å§‹ç”Ÿæˆè¡¨æ¸…å•..."
+    ListObjects mdl,pkg_name,type_name,ExcelSheet,rowCnt       'éå†æ¨¡å‹
 
-    'ÑùÊ½-ÉèÖÃ²¿·ÖÁĞÎª×óÓÒ¾ÓÖĞ
+    'æ ·å¼-è®¾ç½®éƒ¨åˆ†åˆ—ä¸ºå·¦å³å±…ä¸­
     With ExcelSheet
-        .Columns(1).HorizontalAlignment = 3      '×óÓÒ¾ÓÖĞ
-        .Columns(2).HorizontalAlignment = 3      '×óÓÒ¾ÓÖĞ
-        .Columns(5).HorizontalAlignment = 3      '×óÓÒ¾ÓÖĞ
+        .Columns(1).HorizontalAlignment = 3      'å·¦å³å±…ä¸­
+        .Columns(2).HorizontalAlignment = 3      'å·¦å³å±…ä¸­
+        .Columns(5).HorizontalAlignment = 3      'å·¦å³å±…ä¸­
     End With
 
-    'µ÷ÕûÕû¸öÊı¾İÇøÓòÑùÊ½
+    'è°ƒæ•´æ•´ä¸ªæ•°æ®åŒºåŸŸæ ·å¼
     Dim rowEnd
-    rowEnd = rowCnt-1                '×îºóÒ»ĞĞĞĞºÅ
+    rowEnd = rowCnt-1                'æœ€åä¸€è¡Œè¡Œå·
     With ExcelSheet.Range(COL_TABLE_ID+"2",COL_TABLE_COMMENT+Cstr(rowEnd))
-        .Borders(1).LineStyle = 1                       'ËÄÖÜ±ß¿ò
+        .Borders(1).LineStyle = 1                       'å››å‘¨è¾¹æ¡†
         .Borders(2).LineStyle = 1
         .Borders(3).LineStyle = 1
         .Borders(4).LineStyle = 1
     End With
-    ExcelSheet.Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+Cstr(rowEnd)).Font.Size = 10       '×ÖÌå
+    ExcelSheet.Range(COL_TABLE_ID+"1",COL_TABLE_COMMENT+Cstr(rowEnd)).Font.Size = 10       'å­—ä½“
 
-    '°´²ãÃû¡¢±íÃûÅÅĞò
+    'æŒ‰å±‚åã€è¡¨åæ’åº
     ExcelApp.AddCustomList Array("ODM", "FDM", "ADM", "MDM", "PUBLIC")
     ExcelSheet.Sort.SortFields.Clear
     'ExcelSheet.Sort.SortFields.Add ExcelSheet.Range(COL_TABLE_SCHEMA+"2",COL_TABLE_SCHEMA+Cstr(rowEnd)), 0, 1, "ODM,FDM,ADM,DMD,PUBLIC", 0
@@ -154,40 +191,54 @@ sub createMenuSheet(mdl)
         .Apply
     End With
 
-    'É¸Ñ¡
+    'ç­›é€‰
     ExcelApp.Selection.AutoFilter
 
-    '¶³½áÊ×ĞĞ
-    ExcelApp.ActiveWindow.SplitRow = 1          'ĞĞ
-    ExcelApp.ActiveWindow.SplitColumn = 0       'ÁĞ
+    'å†»ç»“é¦–è¡Œ
+    ExcelApp.ActiveWindow.SplitRow = 1          'è¡Œ
+    ExcelApp.ActiveWindow.SplitColumn = 0       'åˆ—
     ExcelApp.ActiveWindow.FreezePanes = True
 
-    ExcelBook.SaveAs file_path
+    ExcelBook.SaveAs file_name
     ExcelBook.Close
     ExcelApp.Quit
     Set ExcelSheet = Nothing
     Set ExcelBook = Nothing
     Set ExcelApp = Nothing
 
-    output "±íÇåµ¥Éú³ÉÍê±Ï, ¹² " + Cstr(rowCnt-2) + " ÕÅ±í!"
-    Exit Sub
-End Sub
+    output "è¡¨æ¸…å•ç”Ÿæˆå®Œæ¯•, å…± " + Cstr(rowCnt-2) + " å¼ è¡¨!"
+    createMenuSheet=rowCnt-2
+End Function
 
 
-'±éÀúÄ£ĞÍ
-Private Sub ListObjects(fldr,ExcelSheet,rowCnt)
+'éå†æ¨¡å‹
+Private Sub ListObjects(fldr,pkg_name,type_name,ExcelSheet,rowCnt)
     Dim obj
     For Each obj In fldr.children
-        getTables fldr,obj,ExcelSheet,rowCnt
+	    if LCase(type_name)<>"all" then
+		    if (instr(obj.name,type_name)<>0) then
+			    getTables fldr,obj,ExcelSheet,rowCnt
+			end if
+		else
+		    getTables fldr,obj,ExcelSheet,rowCnt
+		end if
+        
     Next
 
     Dim f
     For Each f In fldr.Packages
-        ListObjects f,ExcelSheet,rowCnt
+	    if LCase(pkg_name)<>"all" then
+		    if f.name=pkg_name then
+			    ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
+			end if
+		else
+		    ListObjects f,pkg_name,type_name,ExcelSheet,rowCnt
+		end if
+        
     Next
 End Sub
 
-'»ñÈ¡±íÇåµ¥
+'è·å–è¡¨æ¸…å•
 Private Sub getTables(CurrentFldr,CurrentObject,ExcelSheet,rowCnt)
     Dim col
     Dim colType
@@ -212,9 +263,9 @@ End Sub
 
 
 '-------------------------------------------------------------------------------
-'¸ù¾İÄ¿Â¼Éú³É±í½á¹¹£¬Ã¿¸ö±íÒ»¸öSheet¡£
+'æ ¹æ®ç›®å½•ç”Ÿæˆè¡¨ç»“æ„ï¼Œæ¯ä¸ªè¡¨ä¸€ä¸ªSheetã€‚
 '-------------------------------------------------------------------------------
-sub createTableSheet(mdl)
+sub createTableSheet(mdl,file_name)
 
     Dim ExcelApp, ExcelBook, ExcelSheet, ExcelMenu
     Dim rowIdx, menuIdx
@@ -224,20 +275,20 @@ sub createTableSheet(mdl)
     tableCnt = 0
     tableNum = 0
 
-    'µ±ÓÃ»§Ö¸¶¨Ä¿Â¼ÎÄ¼şÊ±£¬ÖØ¶¨ÒåÊä³öÎÄ¼ş£¬ÒÔÃâÉú³É¹ı³ÌÖĞ³ö´í£¬»ò¶ÔÊä³ö½á¹û²»ÂúÒâÊ±£¬ĞèÒªÖØĞÂ»Ö¸´Ä¿Â¼ÎÄ¼ş¡£
+    'å½“ç”¨æˆ·æŒ‡å®šç›®å½•æ–‡ä»¶æ—¶ï¼Œé‡å®šä¹‰è¾“å‡ºæ–‡ä»¶ï¼Œä»¥å…ç”Ÿæˆè¿‡ç¨‹ä¸­å‡ºé”™ï¼Œæˆ–å¯¹è¾“å‡ºç»“æœä¸æ»¡æ„æ—¶ï¼Œéœ€è¦é‡æ–°æ¢å¤ç›®å½•æ–‡ä»¶ã€‚
     Dim InputFile, OutputFile
-    InputFile = file_path
+    InputFile = file_name
     If UCase(GEN_MENU) = "N" Then
         OutputFile = Mid(InputFile, 1, InstrRev(InputFile,".")-1) + "_out" + Mid(InputFile, InstrRev(InputFile,"."))
     Else
         OutputFile = InputFile
     End If
 
-    '¶ÁÈ¡Ä¿Â¼ÎÄ¼ş
+    'è¯»å–ç›®å½•æ–‡ä»¶
     Set ExcelApp = CreateObject("Excel.Application")
     ExcelApp.visible=FALSE
-    Set ExcelBook = ExcelApp.Workbooks.Open(file_path)
-    Set ExcelMenu = ExcelBook.Sheets("Ä¿Â¼")
+    Set ExcelBook = ExcelApp.Workbooks.Open(file_name)
+    Set ExcelMenu = ExcelBook.Sheets("ç›®å½•")
     menuIdx = ExcelMenu.Index
 
     For rowIdx = 2 To MAX_TABLES+2
@@ -247,99 +298,99 @@ sub createTableSheet(mdl)
             tableNum = tableNum + 1
         End If
 
-        '»ñÈ¡±íĞÅÏ¢
+        'è·å–è¡¨ä¿¡æ¯
         tableOwner = ExcelMenu.Cells(rowIdx, COL_TABLE_SCHEMA).Value
         tableCode = ExcelMenu.Cells(rowIdx, COL_TABLE_CODE).Value
         tableName = ExcelMenu.Cells(rowIdx, COL_TABLE_NAME).Value
         tableComment = ExcelMenu.Cells(rowIdx, COL_TABLE_COMMENT).Value
         tableFlag = ExcelMenu.Cells(rowIdx, COL_DEAL_FLAG).Value
 
-        If UCase(tableFlag) = "Y" AND ( Len(tableCode)>0 OR Len(tableName)>0 ) Then     '´¦Àí±êÖ¾·ÇYÔòÌø¹ı
+        If UCase(tableFlag) = "Y" AND ( Len(tableCode)>0 OR Len(tableName)>0 ) Then     'å¤„ç†æ ‡å¿—éYåˆ™è·³è¿‡
 
-            '¼ì²é±íÊÇ·ñ´æÔÚ
+            'æ£€æŸ¥è¡¨æ˜¯å¦å­˜åœ¨
             Dim iFlag
             iFlag = 0
             checkTable mdl,ExcelSheet,tableCode,tableName,iFlag
 
-            '±í´æÔÚÔò¼ÌĞø´¦Àí
+            'è¡¨å­˜åœ¨åˆ™ç»§ç»­å¤„ç†
             If iFlag = 1 Then
 
                 tableCnt = tableCnt + 1
 
-                '´´½¨SheetÒ³
-                Set ExcelSheet = ExcelBook.Sheets.Add(,ExcelBook.Sheets(menuIdx))       'ÔÚÄ¿Â¼ºóÃæ²åÈë£¬µÚÒ»¸ö²ÎÊıÎª¿Õ
+                'åˆ›å»ºSheeté¡µ
+                Set ExcelSheet = ExcelBook.Sheets.Add(,ExcelBook.Sheets(menuIdx))       'åœ¨ç›®å½•åé¢æ’å…¥ï¼Œç¬¬ä¸€ä¸ªå‚æ•°ä¸ºç©º
                 
-                'excel sheetÃû²»ÄÜ³¬¹ı31¸ö×Ö·û£¬excel»á±¨´í
+                'excel sheetåä¸èƒ½è¶…è¿‡31ä¸ªå­—ç¬¦ï¼Œexcelä¼šæŠ¥é”™
                 'ExcelSheet.Name = left(tableCode,31)
                 ExcelSheet.Name = left(tableName,31)
 
                 output "["+Cstr(tableCnt)+"] "+tableCode
 
-                'Ìí¼Ó×Ô¶¨ÒåÃû³Æ  ·¶Î§-¹¤×÷²¾
+                'æ·»åŠ è‡ªå®šä¹‰åç§°  èŒƒå›´-å·¥ä½œç°¿
                 'ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C3"       'R=row C=col R2C3=$2$3=C2
                 ExcelBook.Names.Add tableOwner+"."+tableCode,"="+ExcelMenu.Name+"!R"+Cstr(rowIdx)+"C5"       'R=row C=col R2C3=$2$3=C2
 
-                'Éú³É±íÍ·
+                'ç”Ÿæˆè¡¨å¤´
                 With ExcelSheet
-                    'µÚÒ»ĞĞ
-                    .Cells(1,"A").Value = "<<·µ»ØÄ¿Â¼"
-                    '³¬Á´½Ó£¬Ö¸Ïò×Ô¶¨ÒåÃû³Æ
+                    'ç¬¬ä¸€è¡Œ
+                    .Cells(1,"A").Value = "<<è¿”å›ç›®å½•"
+                    'è¶…é“¾æ¥ï¼ŒæŒ‡å‘è‡ªå®šä¹‰åç§°
                     .Hyperlinks.Add ExcelSheet.Range("A1"),"",tableOwner+"."+tableCode,"",ExcelSheet.Cells(1,"A").Value
-                    '³¬Á´½Ó£¬Ö±½Ó¶¨Î»µ½µ¥Ôª¸ñ£¬µ«ÕâÑùµÄ»°£¬Èç¹ûÄ¿±êµ¥Ôª¸ñ·¢Éú±ä»¯£¬¾ÍÌø´íÁË¡£
+                    'è¶…é“¾æ¥ï¼Œç›´æ¥å®šä½åˆ°å•å…ƒæ ¼ï¼Œä½†è¿™æ ·çš„è¯ï¼Œå¦‚æœç›®æ ‡å•å…ƒæ ¼å‘ç”Ÿå˜åŒ–ï¼Œå°±è·³é”™äº†ã€‚
                     '.Hyperlinks.Add ExcelSheet.Range("A1"),"",ExcelMenu.Name+"!C"+Cstr(rowIdx),"",ExcelSheet.Cells(1,"A").Value
 
-                    'µÚ¶şĞĞ
-                    .Cells(2,"A").Value = "Ó¢ÎÄÃû"
+                    'ç¬¬äºŒè¡Œ
+                    .Cells(2,"A").Value = "è‹±æ–‡å"
                     .Range("B2","C2").Merge
                     .Cells(2,"B").Value = tableCode
 
-                    .Cells(2,"D").Value = "Ä£Ê½Ãû"
+                    .Cells(2,"D").Value = "æ¨¡å¼å"
                     .Cells(2,"E").Value = tableOwner
 
-                    'µÚÈıĞĞ
-                    .Cells(3,"A").Value = "ÖĞÎÄÃû"
+                    'ç¬¬ä¸‰è¡Œ
+                    .Cells(3,"A").Value = "ä¸­æ–‡å"
                     .Range("B3","E3").Merge
                     .Cells(3,"B").Value = tableName
 
-                    'µÚËÄĞĞ
-                    .Cells(4,"A").Value = "ÃèÊö"
+                    'ç¬¬å››è¡Œ
+                    .Cells(4,"A").Value = "æè¿°"
                     .Range("B4","E4").Merge
                     .Cells(4,"B").Value = tableComment
 
-                    'ÉèÖÃÑùÊ½-±íÍ·
-                    .Range("A2","A4").Interior.Color = D_COLOR_GREEN  '±³¾°É«-Ç³ÂÌÉ«
-                    .Range("A2","A4").Font.Bold = True              '´ÖÌå
-                    .Range("A2","A4").HorizontalAlignment = 3       '×óÓÒ¾ÓÖĞ
+                    'è®¾ç½®æ ·å¼-è¡¨å¤´
+                    .Range("A2","A4").Interior.Color = D_COLOR_GREEN  'èƒŒæ™¯è‰²-æµ…ç»¿è‰²
+                    .Range("A2","A4").Font.Bold = True              'ç²—ä½“
+                    .Range("A2","A4").HorizontalAlignment = 3       'å·¦å³å±…ä¸­
 
-                    .Cells(2,"D").Interior.Color = D_COLOR_GREEN      '±³¾°É«-Ç³ÂÌÉ«
-                    .Cells(2,"D").Font.Bold = True                  '´ÖÌå
-                    .Cells(2,"D").HorizontalAlignment = 3           '×óÓÒ¾ÓÖĞ
+                    .Cells(2,"D").Interior.Color = D_COLOR_GREEN      'èƒŒæ™¯è‰²-æµ…ç»¿è‰²
+                    .Cells(2,"D").Font.Bold = True                  'ç²—ä½“
+                    .Cells(2,"D").HorizontalAlignment = 3           'å·¦å³å±…ä¸­
 
-                    .Range("A1","E4").Font.Size = 10                '×ÖÌå
-                    .Range("A2","E4").Borders(1).LineStyle = 1      'ËÄÖÜ±ß¿ò
+                    .Range("A1","E4").Font.Size = 10                'å­—ä½“
+                    .Range("A2","E4").Borders(1).LineStyle = 1      'å››å‘¨è¾¹æ¡†
                     .Range("A2","E4").Borders(2).LineStyle = 1
                     .Range("A2","E4").Borders(3).LineStyle = 1
                     .Range("A2","E4").Borders(4).LineStyle = 1
 
-                    'µÚÎåĞĞ-±êÌâÀ¸
-                    .Cells(5,"A").Value = "ĞòºÅ"
-                    .Cells(5,"B").Value = "×Ö¶ÎÖĞÎÄÃû"
-                    .Cells(5,"C").Value = "×Ö¶ÎÓ¢ÎÄÃû"
-                    .Cells(5,"D").Value = "×Ö¶ÎÀàĞÍ"
-                    .Cells(5,"E").Value = "Êı¾İ³¤¶È"
-                    .Cells(5,"F").Value = "Ö÷¼ü"
-                    .Cells(5,"G").Value = "·Ç¿Õ"
-                    .Cells(5,"H").Value = "·Ö²¼¼ü"
-                    .Cells(5,"I").Value = "ËµÃ÷"
-                    .Cells(5,"J").Value = "±¸×¢"
+                    'ç¬¬äº”è¡Œ-æ ‡é¢˜æ 
+                    .Cells(5,"A").Value = "åºå·"
+                    .Cells(5,"B").Value = "å­—æ®µä¸­æ–‡å"
+                    .Cells(5,"C").Value = "å­—æ®µè‹±æ–‡å"
+                    .Cells(5,"D").Value = "å­—æ®µç±»å‹"
+                    .Cells(5,"E").Value = "æ•°æ®é•¿åº¦"
+                    .Cells(5,"F").Value = "ä¸»é”®"
+                    .Cells(5,"G").Value = "éç©º"
+                    .Cells(5,"H").Value = "åˆ†å¸ƒé”®"
+                    .Cells(5,"I").Value = "è¯´æ˜"
+                    .Cells(5,"J").Value = "å¤‡æ³¨"
 
-                    'ÉèÖÃÑùÊ½-µÚÎåĞĞ-±êÌâÀ¸
+                    'è®¾ç½®æ ·å¼-ç¬¬äº”è¡Œ-æ ‡é¢˜æ 
                     With .Range("A5","J5")
-                        .Interior.Color = D_COLOR_BLUE  '±³¾°É«-ÌìÀ¶É«
-                        .Font.Bold = True               '´ÖÌå
-                        .HorizontalAlignment = 3        '×óÓÒ¾ÓÖĞ
-                        .Font.Size = 10                 '×ÖÌå
-                        .Borders(1).LineStyle = 1       'ËÄÖÜ±ß¿ò
+                        .Interior.Color = D_COLOR_BLUE  'èƒŒæ™¯è‰²-å¤©è“è‰²
+                        .Font.Bold = True               'ç²—ä½“
+                        .HorizontalAlignment = 3        'å·¦å³å±…ä¸­
+                        .Font.Size = 10                 'å­—ä½“
+                        .Borders(1).LineStyle = 1       'å››å‘¨è¾¹æ¡†
                         .Borders(2).LineStyle = 1
                         .Borders(3).LineStyle = 1
                         .Borders(4).LineStyle = 1
@@ -347,58 +398,58 @@ sub createTableSheet(mdl)
 
                 End With
 
-                'Éú³É×Ö¶ÎÄÚÈİ
+                'ç”Ÿæˆå­—æ®µå†…å®¹
                 colCnt=0
                 getColumns mdl,ExcelSheet,tableCode,colCnt
 
-                'µ÷ÕûÕû¸öÊı¾İÇøÓòÑùÊ½
+                'è°ƒæ•´æ•´ä¸ªæ•°æ®åŒºåŸŸæ ·å¼
                 Dim rowEnd
-                rowEnd = colCnt+BEG_ROW-1       '×îºóÒ»ĞĞĞĞºÅ
+                rowEnd = colCnt+BEG_ROW-1       'æœ€åä¸€è¡Œè¡Œå·
                 With ExcelSheet.Range("A"+Cstr(BEG_ROW),END_COL+Cstr(rowEnd))
-                    .Borders(1).LineStyle = 1    'ËÄÖÜ±ß¿ò
+                    .Borders(1).LineStyle = 1    'å››å‘¨è¾¹æ¡†
                     .Borders(2).LineStyle = 1
                     .Borders(3).LineStyle = 1
                     .Borders(4).LineStyle = 1
                 End With
-                ExcelSheet.Range("A"+Cstr(BEG_ROW),END_COL+Cstr(rowEnd)).Font.Size = 10              '×ÖÌå-Õû¸öÊı¾İÇøÓò
+                ExcelSheet.Range("A"+Cstr(BEG_ROW),END_COL+Cstr(rowEnd)).Font.Size = 10              'å­—ä½“-æ•´ä¸ªæ•°æ®åŒºåŸŸ
 
-                ExcelSheet.Range("A"+Cstr(BEG_ROW),"A"+Cstr(rowEnd)).HorizontalAlignment = 3     '×óÓÒ¾ÓÖĞ-ĞòºÅ
-                ExcelSheet.Range("F"+Cstr(BEG_ROW),"H"+Cstr(rowEnd)).HorizontalAlignment = 3     '×óÓÒ¾ÓÖĞ-Ö÷¼ü¡¢·Ç¿Õ¡¢·Ö²¼¼ü
+                ExcelSheet.Range("A"+Cstr(BEG_ROW),"A"+Cstr(rowEnd)).HorizontalAlignment = 3     'å·¦å³å±…ä¸­-åºå·
+                ExcelSheet.Range("F"+Cstr(BEG_ROW),"H"+Cstr(rowEnd)).HorizontalAlignment = 3     'å·¦å³å±…ä¸­-ä¸»é”®ã€éç©ºã€åˆ†å¸ƒé”®
 
-                '´´½¨Ä¿Â¼ÖĞµÄ³¬Á´½Ó
+                'åˆ›å»ºç›®å½•ä¸­çš„è¶…é“¾æ¥
                 ExcelMenu.Hyperlinks.Add ExcelMenu.Range(COL_TABLE_CODE+Cstr(rowIdx)),"",ExcelSheet.Name+"!A1","",ExcelSheet.Name
                 ExcelMenu.Hyperlinks.Add ExcelMenu.Range(COL_TABLE_NAME+Cstr(rowIdx)),"",ExcelSheet.Name+"!A1","",ExcelSheet.Name
                 ExcelMenu.Range(COL_TABLE_CODE+Cstr(rowIdx)).Font.Size = 10
-                '¸üĞÂÄ¿Â¼ÖĞµÄ±íÖĞÎÄÃû
+                'æ›´æ–°ç›®å½•ä¸­çš„è¡¨ä¸­æ–‡å
                 ExcelMenu.Range(COL_TABLE_NAME+Cstr(rowIdx)).Value = tableName
 
-                'ÉèÖÃ¿í¶È
+                'è®¾ç½®å®½åº¦
                 With ExcelSheet
-                    .Columns("A:H").EntireColumn.AutoFit    'Ç°8ÁĞ-×ÔÊÊÓ¦
-                    .Columns(9).ColumnWidth = 30            'ËµÃ÷   ¿í£¬µ¥Î»£º×Ö·û
-                    .Columns(10).ColumnWidth = 10           '±¸×¢
+                    .Columns("A:H").EntireColumn.AutoFit    'å‰8åˆ—-è‡ªé€‚åº”
+                    .Columns(9).ColumnWidth = 30            'è¯´æ˜   å®½ï¼Œå•ä½ï¼šå­—ç¬¦
+                    .Columns(10).ColumnWidth = 10           'å¤‡æ³¨
                 End With
 
-                '²ğ·Ö¶³½áµ¥Ôª¸ñ
-                ExcelApp.ActiveWindow.SplitRow = BEG_ROW-1  'ĞĞ
-                ExcelApp.ActiveWindow.SplitColumn = 5       'ÁĞ
+                'æ‹†åˆ†å†»ç»“å•å…ƒæ ¼
+                ExcelApp.ActiveWindow.SplitRow = BEG_ROW-1  'è¡Œ
+                ExcelApp.ActiveWindow.SplitColumn = 5       'åˆ—
                 ExcelApp.ActiveWindow.FreezePanes = True
 
-                'ÊÇ·ñÏÔÊ¾·Ö²¼¼ü
+                'æ˜¯å¦æ˜¾ç¤ºåˆ†å¸ƒé”®
                 If UCase(SHOW_DISTRIBUTION_KEYS) <> "Y" Then
-                    ExcelSheet.Columns(8).Delete             'É¾³ı·Ö²¼¼üÁĞ
+                    ExcelSheet.Columns(8).Delete             'åˆ é™¤åˆ†å¸ƒé”®åˆ—
                 End If
             End If
         End If
     Next
 
-    'ÉèÖÃÄ¿Â¼Ò³Îª»î¶¯Ò³Ãæ£¬Ğ§¹û£º´ò¿ªEXCELÊ±£¬Ê×Ò³ÎªÄ¿Â¼Ò³Ãæ
+    'è®¾ç½®ç›®å½•é¡µä¸ºæ´»åŠ¨é¡µé¢ï¼Œæ•ˆæœï¼šæ‰“å¼€EXCELæ—¶ï¼Œé¦–é¡µä¸ºç›®å½•é¡µé¢
     ExcelMenu.Activate
 
-    'É¸Ñ¡´¦Àí±êÖ¾ÎªYµÄ¼ÇÂ¼
+    'ç­›é€‰å¤„ç†æ ‡å¿—ä¸ºYçš„è®°å½•
     ExcelMenu.Range("$A$1:$"+COL_DEAL_FLAG+"$"+Cstr(tableNum)).AutoFilter Asc(COL_DEAL_FLAG)-Asc("A")+1,"=Y"
 
-    ExcelBook.SaveAs OutputFile         'Áí´æÎªÊä³öÎÄ¼ş
+    ExcelBook.SaveAs OutputFile         'å¦å­˜ä¸ºè¾“å‡ºæ–‡ä»¶
     ExcelBook.Close
     ExcelApp.Quit
     Set ExcelMenu  = Nothing
@@ -406,19 +457,19 @@ sub createTableSheet(mdl)
     Set ExcelBook  = Nothing
     Set ExcelApp   = Nothing
 
-    output "Êä³öÎÄ¼şÎª£º[" + OutputFile + "]"
+    output "è¾“å‡ºæ–‡ä»¶ä¸ºï¼š[" + OutputFile + "]"
     Exit Sub
 End Sub
 
-'¼ì²é±íÊÇ·ñ´æÔÚ
+'æ£€æŸ¥è¡¨æ˜¯å¦å­˜åœ¨
 Sub checkTable(mdl,ExcelSheet,tableCode,tableName,iFlag)
     Dim tb
 
     If Len(tableCode) > 0 Then
         set tb = mdl.FindChildByCode(tableCode,cls_Table)
         If ( tb Is Nothing ) Then
-            output "Î´ÕÒµ½±í[" + tableCode + "]"
-            errString = errString + mLF + "Î´ÕÒµ½±í[" + tableCode + "]"
+            output "æœªæ‰¾åˆ°è¡¨[" + tableCode + "]"
+            errString = errString + mLF + "æœªæ‰¾åˆ°è¡¨[" + tableCode + "]"
             errCount  = errCount + 1
         Else
             iFlag = 1
@@ -427,8 +478,8 @@ Sub checkTable(mdl,ExcelSheet,tableCode,tableName,iFlag)
     Else
         set tb = mdl.FindChildByName(tableName,cls_Table)
         If ( tb Is Nothing ) Then
-            output "Î´ÕÒµ½±í[" + tableName + "]"
-            errString = errString + mLF + "Î´ÕÒµ½±í[" + tableName + "]"
+            output "æœªæ‰¾åˆ°è¡¨[" + tableName + "]"
+            errString = errString + mLF + "æœªæ‰¾åˆ°è¡¨[" + tableName + "]"
             errCount  = errCount + 1
         Else
             iFlag = 1
@@ -438,29 +489,29 @@ Sub checkTable(mdl,ExcelSheet,tableCode,tableName,iFlag)
 
 End Sub
 
-'Éú³É×Ö¶Î
+'ç”Ÿæˆå­—æ®µ
 Sub getColumns(mdl,ExcelSheet,tableCode,colCnt)
 
     Dim tb, col, rowIdx
-    set tb = mdl.FindChildByCode(tableCode,cls_Table)           'ÔÚÄ£ĞÍÖĞ²éÕÒÄ¿±ê±í
+    set tb = mdl.FindChildByCode(tableCode,cls_Table)           'åœ¨æ¨¡å‹ä¸­æŸ¥æ‰¾ç›®æ ‡è¡¨
     If ( tb Is Nothing ) Then
-        output "Î´ÕÒµ½±í[" + tableCode + "]"
-        errString = errString + mLF + "Î´ÕÒµ½±í[" + tableCode + "]"
+        output "æœªæ‰¾åˆ°è¡¨[" + tableCode + "]"
+        errString = errString + mLF + "æœªæ‰¾åˆ°è¡¨[" + tableCode + "]"
         errCount  = errCount + 1
     End If
 
-    Dim colDistributionKeys, dKeys, iKeys, iKeysFlag         '·Ö²¼¼ü
+    Dim colDistributionKeys, dKeys, iKeys, iKeysFlag         'åˆ†å¸ƒé”®
     Dim tPhysicalOptions, iIdx1, iIdx2, sStr1, sStr2
     iKeysFlag = 0
     If Len(tb.PhysicalOptions) > 0 Then
-        tPhysicalOptions = Replace(UCase(tb.PhysicalOptions), mLF, "")      'È¥»»ĞĞ
-        iIdx1 = Instr(tPhysicalOptions, "DISTRIBUTED")                          'DISTRIBUTEDÔÚ×Ö·û´®ÖĞµÄÎ»ÖÃ
+        tPhysicalOptions = Replace(UCase(tb.PhysicalOptions), mLF, "")      'å»æ¢è¡Œ
+        iIdx1 = Instr(tPhysicalOptions, "DISTRIBUTED")                          'DISTRIBUTEDåœ¨å­—ç¬¦ä¸²ä¸­çš„ä½ç½®
         If iIdx1 > 0 Then
-            sStr1 = Mid(tPhysicalOptions, iIdx1)                                '´Ódistributed¿ªÊ¼µÄ×Ó´®
-            sStr2 = Mid(sStr1, 1, Instr(sStr1, ")")-1)                          'distributed by (...  Ã»ÓĞ")"
-            colDistributionKeys = Mid(sStr2, Instr(sStr2, "(")+1)               '·Ö²¼¼ü×Ó´®£¬ÓĞ¶à¸öµÄ»°¶ººÅ·Ö¸ô
-            dKeys = Split( colDistributionKeys, "," )                           '²ğ·Ö³ÉÊı×é
-            iKeys = ubound(dKeys)                                               'Êı×é×î´óÏÂ±ê
+            sStr1 = Mid(tPhysicalOptions, iIdx1)                                'ä»distributedå¼€å§‹çš„å­ä¸²
+            sStr2 = Mid(sStr1, 1, Instr(sStr1, ")")-1)                          'distributed by (...  æ²¡æœ‰")"
+            colDistributionKeys = Mid(sStr2, Instr(sStr2, "(")+1)               'åˆ†å¸ƒé”®å­ä¸²ï¼Œæœ‰å¤šä¸ªçš„è¯é€—å·åˆ†éš”
+            dKeys = Split( colDistributionKeys, "," )                           'æ‹†åˆ†æˆæ•°ç»„
+            iKeys = ubound(dKeys)                                               'æ•°ç»„æœ€å¤§ä¸‹æ ‡
             iKeysFlag = 1
         End If
     End If
@@ -470,26 +521,26 @@ Sub getColumns(mdl,ExcelSheet,tableCode,colCnt)
         rowIdx = rowIdx + 1
         colCnt = colCnt + 1
 
-        'µ¥Ôª¸ñ-ÖĞÓ¢ÎÄ±íÃû¡¢Êı¾İÀàĞÍ¡¢³¤¶È
+        'å•å…ƒæ ¼-ä¸­è‹±æ–‡è¡¨åã€æ•°æ®ç±»å‹ã€é•¿åº¦
         ExcelSheet.Cells(rowIdx,"A").Value = colCnt
         ExcelSheet.Cells(rowIdx,"B").Value = col.Name
         ExcelSheet.Cells(rowIdx,"C").Value = col.Code
         ExcelSheet.Cells(rowIdx,"D").Value = col.DataType
         ExcelSheet.Cells(rowIdx,"E").Value = col.Length
 
-        '½ØÈ¡×Ö¶ÎÀàĞÍ
+        'æˆªå–å­—æ®µç±»å‹
         Dim colType, strPair
         If Len(col.DataType) > 0 Then
             strPair = Split( col.DataType, "(" )
             colType = strPair(0)
         Else
             colType = ""
-            output "±í[" + tableCode + "] ×Ö¶Î["+ col.Name + "] ÀàĞÍÎª¿Õ£¡"
-            errString = errString + mLF + "±í[" + tableCode + "] ×Ö¶Î["+ col.Name + "] ÀàĞÍÎª¿Õ£¡"
+            output "è¡¨[" + tableCode + "] å­—æ®µ["+ col.Name + "] ç±»å‹ä¸ºç©ºï¼"
+            errString = errString + mLF + "è¡¨[" + tableCode + "] å­—æ®µ["+ col.Name + "] ç±»å‹ä¸ºç©ºï¼"
             errCount  = errCount + 1
         End If
 
-        '¸ù¾İ×Ö¶ÎÀàĞÍ£¬»ñÈ¡Êı¾İ³¤¶È£¬CHARÀàĞÍµÄPDM×Ô´ø³¤¶È£¬²»ĞèÁíÍâ´¦Àí
+        'æ ¹æ®å­—æ®µç±»å‹ï¼Œè·å–æ•°æ®é•¿åº¦ï¼ŒCHARç±»å‹çš„PDMè‡ªå¸¦é•¿åº¦ï¼Œä¸éœ€å¦å¤–å¤„ç†
         If UCase(colType) = "DATE" Then
             ExcelSheet.Cells(rowIdx,"E").Value = DATA_TYPE_DATE_LEN
         End If
@@ -499,25 +550,25 @@ Sub getColumns(mdl,ExcelSheet,tableCode,colCnt)
         If UCase(colType) = "INTEGER" Then
             ExcelSheet.Cells(rowIdx,"E").Value = DATA_TYPE_INTEGER_LEN
         End If
-        If UCase(colType) = "DECIMAL" Or UCase(colType) = "NUMERIC" Then '20150728 ĞÂÔöNUMERICÅĞ¶Ï
+        If UCase(colType) = "DECIMAL" Or UCase(colType) = "NUMERIC" Then '20150728 æ–°å¢NUMERICåˆ¤æ–­
             Dim str1, str2, colLen
-            str1 = Split( strPair(1), ")" )     '½ØÈ¡À¨ºÅÄÚµÄÖµ£¬Èç15,2»ò8
-            str2 = Split( str1(0), "," )        '½ØÈ¡×Ü³¤¶È
+            str1 = Split( strPair(1), ")" )     'æˆªå–æ‹¬å·å†…çš„å€¼ï¼Œå¦‚15,2æˆ–8
+            str2 = Split( str1(0), "," )        'æˆªå–æ€»é•¿åº¦
             colLen = str2(0)
             ExcelSheet.Cells(rowIdx,"E").Value = Cint(colLen)+2
         End If
 
-        'µ¥Ôª¸ñ-Ö÷¼ü
+        'å•å…ƒæ ¼-ä¸»é”®
         If col.Primary = true Then
             ExcelSheet.Cells(rowIdx,"F").Value = "Y"
         End If
 
-        'µ¥Ôª¸ñ-·Ç¿Õ
+        'å•å…ƒæ ¼-éç©º
         If col.Mandatory = true Then
             ExcelSheet.Cells(rowIdx,"G").Value = "Y"
         End If
 
-        'µ¥Ôª¸ñ-·Ö²¼¼ü
+        'å•å…ƒæ ¼-åˆ†å¸ƒé”®
         If iKeysFlag = 1 Then
             Dim keyIdx
             For keyIdx = 0 To iKeys
@@ -528,9 +579,21 @@ Sub getColumns(mdl,ExcelSheet,tableCode,colCnt)
             Next
         End If
 
-        'µ¥Ôª¸ñ-ËµÃ÷
+        'å•å…ƒæ ¼-è¯´æ˜
         ExcelSheet.Cells(rowIdx,"I").Value = col.Comment
     Next
 
     Exit Sub
 End Sub
+
+Function pathExists(file_path)
+    Dim fso
+    Set fso=CreateObject("Scripting.FileSystemObject")        
+    If fso.folderExists(file_path) Then         
+       pathExists=1
+    Else 
+       pathExists=0
+    End If
+end function
+
+
