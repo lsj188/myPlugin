@@ -1,4 +1,4 @@
-<mxfile modified="2022-05-25T04:10:44.043Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="tx3dgMR1QUPNoBWQt6bz" version="17.4.5" type="github">
+<mxfile modified="2022-05-25T04:11:08.053Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="jw4t2fv81PyRlQ_jZHX6" version="17.4.5" type="github">
   <diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
     <mxGraphModel dx="782" dy="426" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -11,7 +11,7 @@
           <mxGeometry x="229" y="280" width="422" height="200" as="geometry" />
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-83" value="Data lake" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;align=center;labelPosition=center;verticalLabelPosition=top;verticalAlign=bottom;" vertex="1" parent="UEzPUAAOIrF-is8g5C7q-74">
-          <mxGeometry x="269" y="90" width="300" height="150" as="geometry" />
+          <mxGeometry x="250" y="90" width="330" height="150" as="geometry" />
         </mxCell>
         <mxCell id="D5x38RxMxP4ojH3yNYhL-5" value="IAM" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.iam;fillColor=#759C3E;gradientColor=none;" parent="UEzPUAAOIrF-is8g5C7q-74" vertex="1">
           <mxGeometry x="289" y="10" width="20" height="30" as="geometry" />
