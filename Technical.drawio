@@ -1,6 +1,6 @@
-<mxfile modified="2022-05-25T11:01:13.022Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="9i3d22nhaUd3GNQVSXs0" version="17.4.5" type="github">
+<mxfile modified="2022-05-25T11:02:33.062Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="mB2VRUHV00sklPO0OID5" version="17.4.5" type="github">
   <diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
-    <mxGraphModel dx="920" dy="501" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1117" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -143,7 +143,7 @@
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-93" value="Security Group" style="rounded=1;arcSize=10;dashed=1;strokeColor=#ff0000;fillColor=none;gradientColor=none;dashPattern=8 4;strokeWidth=2;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontColor=#FF3333;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-92">
           <mxGeometry x="20.25" y="44.75" width="99.5" height="120.5" as="geometry" />
         </mxCell>
-        <mxCell id="5JZvCcHymxRbm2tx9UMQ-95" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-92">
+        <mxCell id="5JZvCcHymxRbm2tx9UMQ-95" value="EC2" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-92">
           <mxGeometry x="40.5" y="70.5" width="59" height="59" as="geometry" />
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.001;entryY=0.703;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#FF3333;" edge="1" parent="UEzPUAAOIrF-is8g5C7q-74" source="5JZvCcHymxRbm2tx9UMQ-95" target="5JZvCcHymxRbm2tx9UMQ-85">
@@ -225,9 +225,9 @@
           <mxGeometry x="26" y="430" width="220" height="220" as="geometry" />
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-103" value="CI/CD" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;align=center;labelPosition=center;verticalLabelPosition=top;verticalAlign=bottom;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-102">
-          <mxGeometry x="30" y="69" width="170" height="80" as="geometry" />
+          <mxGeometry x="30" y="69" width="170" height="101" as="geometry" />
         </mxCell>
-        <mxCell id="5JZvCcHymxRbm2tx9UMQ-111" value="Pipeline" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_analytics_pipeline;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-102">
+        <mxCell id="5JZvCcHymxRbm2tx9UMQ-111" value="Jenkins&lt;br&gt;Pipeline" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_analytics_pipeline;" vertex="1" parent="5JZvCcHymxRbm2tx9UMQ-102">
           <mxGeometry x="71" y="81" width="78" height="42" as="geometry" />
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#000000;" edge="1" parent="1" source="5JZvCcHymxRbm2tx9UMQ-111" target="5JZvCcHymxRbm2tx9UMQ-95">
