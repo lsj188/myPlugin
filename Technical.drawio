@@ -1,4 +1,4 @@
-<mxfile modified="2022-05-25T10:50:22.718Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="VL_O408dGw7qk-A1RllH" version="17.4.5" type="github">
+<mxfile modified="2022-05-25T10:51:55.082Z" host="app.diagrams.net" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39" etag="QsrD0E7bj_IV4ajVeYei" version="17.4.5" type="github">
   <diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
     <mxGraphModel dx="920" dy="501" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -150,7 +150,7 @@
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-100" value="Deploy" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" vertex="1" connectable="0" parent="5JZvCcHymxRbm2tx9UMQ-99">
           <mxGeometry x="-0.2543" y="-1" relative="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="17" y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="5JZvCcHymxRbm2tx9UMQ-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#000000;" edge="1" parent="UEzPUAAOIrF-is8g5C7q-74" source="D5x38RxMxP4ojH3yNYhL-72" target="D5x38RxMxP4ojH3yNYhL-75">
@@ -232,22 +232,21 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="HbvPqLadg1i_rSj2PFfl-9" value="Tableau Dashboard" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/azure2/general/Dashboard.svg;" parent="1" vertex="1">
-          <mxGeometry x="1100" y="207" width="58" height="40.94" as="geometry" />
-        </mxCell>
-        <mxCell id="5JZvCcHymxRbm2tx9UMQ-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#000000;entryX=0.503;entryY=0.959;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="D5x38RxMxP4ojH3yNYhL-64" target="HbvPqLadg1i_rSj2PFfl-9">
+        <mxCell id="5JZvCcHymxRbm2tx9UMQ-127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#000000;" edge="1" parent="1" source="HbvPqLadg1i_rSj2PFfl-9" target="D5x38RxMxP4ojH3yNYhL-64">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="969" y="325" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="606" y="325" />
-              <mxPoint x="1129" y="325" />
+              <mxPoint x="1129" y="330" />
+              <mxPoint x="600" y="330" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="5JZvCcHymxRbm2tx9UMQ-118" value="Athena" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" vertex="1" connectable="0" parent="5JZvCcHymxRbm2tx9UMQ-114">
-          <mxGeometry x="0.0851" relative="1" as="geometry">
-            <mxPoint as="offset" />
+        <mxCell id="5JZvCcHymxRbm2tx9UMQ-128" value="Read" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" vertex="1" connectable="0" parent="5JZvCcHymxRbm2tx9UMQ-127">
+          <mxGeometry x="-0.0574" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="HbvPqLadg1i_rSj2PFfl-9" value="Tableau Dashboard" style="aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/azure2/general/Dashboard.svg;" parent="1" vertex="1">
+          <mxGeometry x="1100" y="207" width="58" height="40.94" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
