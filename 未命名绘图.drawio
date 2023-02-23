@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-02-23T09:20:56.078Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="ofQb3dkn3gdOERL0IknH" version="20.8.23" type="github">
+<mxfile host="app.diagrams.net" modified="2023-02-23T09:22:08.965Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="QT4PQTfos1vvF_VoYD_R" version="20.8.23" type="github">
   <diagram name="Page-1" id="c7488fd3-1785-93aa-aadb-54a6760d102a">
     <mxGraphModel dx="1050" dy="615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="1" shadow="0">
       <root>
@@ -111,19 +111,16 @@
         <mxCell id="Eh5VDf21qg3VSFMiMD_T-23" value="文件服务" style="swimlane;html=1;startSize=20;horizontal=0;rotation=0;" vertex="1" parent="1">
           <mxGeometry x="100" y="540" width="790" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="Eh5VDf21qg3VSFMiMD_T-146" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="Eh5VDf21qg3VSFMiMD_T-23" source="Eh5VDf21qg3VSFMiMD_T-41" target="Eh5VDf21qg3VSFMiMD_T-56">
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-171" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;strokeColor=#d6b656;" edge="1" parent="Eh5VDf21qg3VSFMiMD_T-23" source="Eh5VDf21qg3VSFMiMD_T-41" target="Eh5VDf21qg3VSFMiMD_T-56">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-172" value="Sync" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Eh5VDf21qg3VSFMiMD_T-171">
+          <mxGeometry x="-0.0931" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="Eh5VDf21qg3VSFMiMD_T-41" value="接口文件目录" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="Eh5VDf21qg3VSFMiMD_T-23">
           <mxGeometry x="57" y="69" width="79" height="49" as="geometry" />
-        </mxCell>
-        <mxCell id="Eh5VDf21qg3VSFMiMD_T-147" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;strokeColor=#d6b656;" edge="1" parent="Eh5VDf21qg3VSFMiMD_T-23" source="Eh5VDf21qg3VSFMiMD_T-56" target="Eh5VDf21qg3VSFMiMD_T-41">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Eh5VDf21qg3VSFMiMD_T-148" value="Sync" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Eh5VDf21qg3VSFMiMD_T-147">
-          <mxGeometry x="0.1354" y="2" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="Eh5VDf21qg3VSFMiMD_T-56" value="接口文件目录" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="Eh5VDf21qg3VSFMiMD_T-23">
           <mxGeometry x="678.5" y="69" width="79" height="49" as="geometry" />
