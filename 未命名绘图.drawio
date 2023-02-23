@@ -1,17 +1,32 @@
-<mxfile host="app.diagrams.net" modified="2023-02-23T03:39:19.178Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="HPuOYqxrsjQ8Hn_uMNOy" version="20.8.23" type="github">
+<mxfile host="app.diagrams.net" modified="2023-02-23T03:44:50.550Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="d6v9W0G4Z1XunzH82rFO" version="20.8.23" type="github">
   <diagram name="Page-1" id="c7488fd3-1785-93aa-aadb-54a6760d102a">
-    <mxGraphModel dx="2600" dy="1680" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="1" shadow="0">
+    <mxGraphModel dx="2618" dy="1574" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2b4e8129b02d487f-2" value="Lane 1" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" parent="1" vertex="1">
-          <mxGeometry x="-160" y="150" width="605" height="300" as="geometry" />
+        <mxCell id="2b4e8129b02d487f-2" value="上游" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="-122.5" y="112.5" width="530" height="300" as="geometry" />
         </mxCell>
-        <mxCell id="Eh5VDf21qg3VSFMiMD_T-23" value="Lane 1" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" vertex="1" parent="1">
-          <mxGeometry x="210" y="150" width="605" height="300" as="geometry" />
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-25" value="Start" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="2b4e8129b02d487f-2">
+          <mxGeometry x="143" y="-72" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="Eh5VDf21qg3VSFMiMD_T-24" value="Lane 1" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" vertex="1" parent="1">
-          <mxGeometry x="570" y="150" width="605" height="300" as="geometry" />
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-26" value="生成接口数据" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="2b4e8129b02d487f-2">
+          <mxGeometry x="221.5" y="-62" width="88" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-23" value="文件服务" style="swimlane;html=1;startSize=20;horizontal=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="560" width="1030" height="81.25" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-24" value="下游" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="607.5" y="112.5" width="530" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-28" value="上游" style="swimlane;html=1;startSize=20;horizontal=0;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="247.5" y="112.5" width="530" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-29" value="Start" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="Eh5VDf21qg3VSFMiMD_T-28">
+          <mxGeometry x="143" y="-72" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Eh5VDf21qg3VSFMiMD_T-30" value="生成接口数据" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="Eh5VDf21qg3VSFMiMD_T-28">
+          <mxGeometry x="221.5" y="-62" width="88" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
